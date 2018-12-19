@@ -56,6 +56,9 @@ const development = {
         dateStrings: true
     },
 
+    APP_ID:'wx9676e5a723951d1a',
+    APP_SECRET:'3c699ba347d45fc71413f55fcdac2277',
+
     //超级管理员 Y_USER PK_ID
     SUPER_ADMINISTRATOR:1 ,
 

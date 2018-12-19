@@ -27,7 +27,8 @@
     "koa2-cors": "^2.0.6",
     "koa2-session-redis": "^0.0.2",
     "mysql": "^2.16.0",
-    "pug": "^2.0.0-rc.1"
+    "pug": "^2.0.0-rc.1",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"

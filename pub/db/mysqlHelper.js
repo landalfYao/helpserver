@@ -4,7 +4,21 @@ const mysql  = require("mysql")
 
 const db = {
 
-
+    query2 (sql,args,cb) {
+        const conn   = mysql.createConnection(config.MYSQL)
+        new Promise((resolve, reject) => {
+            
+            conn.query(sql, args, (err, result) => {
+                        if (err) {
+                            console.log(err)
+                            cb({errno:err.errno,code:err.code,sqlMessage:err.sqlMessage})
+                        } else {
+                            cb(result)
+                        }
+                        conn.end()
+            })
+        })
+    },
     async query (sql, args) {
         const conn   = mysql.createConnection(config.MYSQL)
         return new Promise((resolve, reject) => {

@@ -10,7 +10,7 @@ const secretKey = 'adfbrw32rfr23'
 const retCode = require('./../utils/retcode.js')
 const config = require('./../config/config')
 const db = require('./../db/mysqlHelper')
-
+const request = require("request");
 let loginState = {
     data:{},
     set(key,value){
@@ -218,10 +218,25 @@ function filterReturn(result){
     delete result.token
     return result
 }
-
+function http (url, type, data,cb,headers){
+    let options = {
+      url: url,
+      headers:headers,
+      method:type,
+      json:data
+    }
+    request(options, (err, res, body) => {
+        if(res.statusCode == 200){
+          cb(body)
+        }else{
+          console.log(res.statusCode)
+        }
+    })
+  }
 module.exports = {
     secrets:secrets,
     ivkey:ivkey,
+    http:http,
     md5:md5,
     md5d:md5d,
     jwtFun : jwtFun,
