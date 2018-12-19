@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>Nodejs学习笔记（十五）--- Node.js + Koa2 构建网站简单示例</title>
+</head>
+<body>
+<h1><%= title %></h1>
+登录名：<input type="text" id="txtUserName" maxlength="20" />
+<br/>
+<br/>
+密码：<input type="password" id="txtUserPwd" maxlength="12" />
+<br/>
+<br/>
+密码：<input type="password" id="txtUserRePwd" maxlength="12" />
+<br/>
+<br/>
+<input type="button" id="btnSub" value="注册" />
+</body>
+</html>
+
+<script src="/javascripts/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="/javascripts/md5.js" type="text/javascript"></script>
+
+<script type="text/javascript">   
+    $(function(){
+        $('#btnSub').on('click', function(){
+            var $txtUserName = $('#txtUserName'),
+                txtUserNameVal = $.trim($txtUserName.val()),
+                $txtUserPwd = $('#txtUserPwd'),
+                txtUserPwdVal = $.trim($txtUserPwd.val()),
+                $txtUserRePwd = $('#txtUserRePwd'),
+                txtUserRePwdVal = $.trim($txtUserRePwd.val());
+                       
+            if(txtUserNameVal.length == 0){
+                alert('用户名不能为空');                
+                return false;
+            }
+
+            if(txtUserPwdVal.length == 0){                
+                alert('密码不能为空');                
+                return false;
+            }
+
+            if(txtUserRePwdVal.length == 0){
+                alert('重复密码不能为空');   
+                return false;
+            }
+
+            if(txtUserPwdVal != txtUserRePwdVal){                 
+                alert('两次密码不一致');                 
+                return false;
+            }
+
+            $.ajax({
+                url: '/reg',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    username: txtUserNameVal,                    
+                    userpass: hex_md5(txtUserPwdVal)                                        
+                },
+                beforeSend: function (xhr) {},
+                success: function (res) {
+                    if (res != null && res.code) {
+
+                        var retVal = parseInt(res.code);
+
+                        switch (retVal) {
+                            case 2:
+                                alert('输入有误');
+                                break;
+                            case 0:
+                                alert('注册失败');
+                                break;
+                            case 1:
+                                alert('注册成功!');
+                                location.href = '/login'                                
+                                break;
+                            case 10:
+                                alert('用户已注册');
+                                break;                         
+                        }
+                    }
+                    else {
+                        alert('操作失败');
+                    }
+
+                },
+                complete: function (XMLHttpRequest, textStatus) {},
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('操作失败');
+                }
+            });            
+        })
+    });
+
+</script>
