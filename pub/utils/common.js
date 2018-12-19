@@ -122,7 +122,7 @@ var jwtFun = {
                     return result
                 }else{
                     let isroleAuth = true
-                    if(isroleAuth || uid == 10000){
+                    if(isroleAuth || uid == 1){
                         if(payload.pk_id == uid){
                             return {pl:1,payload:payload}
                         }else{

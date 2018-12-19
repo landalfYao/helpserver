@@ -27,7 +27,7 @@ const production = {
         timezone: 'utc'
     },
     //超级管理员
-    SUPER_ADMINISTRATOR:10000 
+    SUPER_ADMINISTRATOR:1 
 
 }
 
@@ -52,11 +52,12 @@ const development = {
         password: "qwe123",
         port: "3306",
         database: "helpdb",
-        timezone: 'local'
+        timezone: '+08:00',
+        dateStrings: true
     },
 
     //超级管理员 Y_USER PK_ID
-    SUPER_ADMINISTRATOR:10000 ,
+    SUPER_ADMINISTRATOR:1 ,
 
     //登录限制
     limiTLogin:{

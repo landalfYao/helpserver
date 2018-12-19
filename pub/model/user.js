@@ -4,8 +4,8 @@ const user = {
 
   //新增用户
   async addUser ( args ) {
-    let sql = 'INSERT INTO y_user(username, pwd ,dtype,dcity,phone,) VALUES(?, ?, ?,?,?)'
-    let params = [args.username, args.password, args.dtype,args.dcity,phone]
+    let sql = 'INSERT INTO y_user(username, pwd ,dtype,dcity,phone) VALUES(?, ?, ?,?,?)'
+    let params = [args.username, args.password, args.dtype,args.dcity,args.phone]
     let result = await db.query(sql, params)
     return result
   },

@@ -696,15 +696,6 @@
       }
     },
     "version": "1.0.0",
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n \"code\": 1,\n \"codeMsg\": \"SUCCESS OK\",\n \"data\": \"refref2wss\",\n \"msg\": \"注册成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
     "sampleRequest": [
       {
         "url": "http://localhost:3000/api/user/login"
@@ -743,20 +734,32 @@
             "optional": false,
             "field": "checkPwd",
             "description": "<p>确认密码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "dtype",
+            "description": "<p>用户类型</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "dcity",
+            "description": "<p>区域</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": ""
           }
         ]
       }
     },
     "version": "1.0.0",
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n \"code\": 1,\n \"codeMsg\": \"SUCCESS OK\",\n \"data\": \"refref2wss\",\n \"msg\": \"注册成功\"\n}",
-          "type": "json"
-        }
-      ]
-    },
     "sampleRequest": [
       {
         "url": "http://localhost:3000/api/user/register"
@@ -1013,62 +1016,6 @@
     "sampleRequest": [
       {
         "url": "http://localhost:3000/api/user/update/pwd"
-      }
-    ],
-    "filename": "pub/bll/user.js",
-    "groupTitle": "User"
-  },
-  {
-    "type": "post",
-    "url": "/api/user/update/role",
-    "title": "修改角色",
-    "description": "<p>更新用户个人信息</p>",
-    "name": "updaterole",
-    "group": "User",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "token",
-            "description": "<p>token</p>"
-          },
-          {
-            "group": "Header",
-            "type": "string",
-            "optional": false,
-            "field": "uid",
-            "description": "<p>用户ID</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "ids",
-            "description": "<p>用户id</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "int",
-            "optional": false,
-            "field": "roleId",
-            "description": "<p>角色Id</p>"
-          }
-        ]
-      }
-    },
-    "version": "1.0.0",
-    "sampleRequest": [
-      {
-        "url": "http://localhost:3000/api/user/update/role"
       }
     ],
     "filename": "pub/bll/user.js",

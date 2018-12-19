@@ -43,7 +43,7 @@ async disableUser ( ctx,state ){
             if(ids[i] == auth.uid){
                 temp = i
             }
-            if(ids[i] == 10000){
+            if(ids[i] == 1){
                 temp = i
             }
         }
@@ -289,14 +289,10 @@ async updateUserInfo ( ctx ){
 * @apiParam {string} username 用户名 4到16位，只能输入字母、数字、下划线、减号
 * @apiParam {string} password 密码 8位以上密码，必须包含字母和数字
 * @apiParam {string} checkPwd 确认密码
+* @apiParam {int} dtype 用户类型
+* @apiParam {string} dcity 区域
+* @apiParam {string} phone
 * @apiVersion 1.0.0  
-* @apiSuccessExample {json} Success-Response:
- * {
- *  "code": 1,
- *  "codeMsg": "SUCCESS OK",
- *  "data": "refref2wss",
- *  "msg": "注册成功"
- * }
  * @apiSampleRequest http://localhost:3000/api/user/register
  * @apiVersion 1.0.0
 */
@@ -372,7 +368,6 @@ async updateUserInfo ( ctx ){
 * @apiParam {string} username 用户名 4到16位，只能输入字母、数字、下划线、减号
 * @apiParam {string} password 密码 8位以上密码，必须包含字母和数字
 * @apiVersion 1.0.0  
-* @apiSuccessExample {json} Success-Response:
  * @apiSampleRequest http://localhost:3000/api/user/login
  * @apiVersion 1.0.0
 */
