@@ -1172,7 +1172,133 @@
         "url": "http://localhost:3000/api/area/get"
       }
     ],
+    "filename": "pub/bll/helplist.js",
+    "groupTitle": "area"
+  },
+  {
+    "type": "post",
+    "url": "/api/area/get",
+    "title": "地区查询",
+    "description": "<p>地区查询</p>",
+    "name": "Get",
+    "group": "area",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>用户ID</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "fields",
+            "description": "<p>查询字段 例('name,id') 传空代表查询所有</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wheres",
+            "description": "<p>查询条件 例('name=0 and id=3')</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "sorts",
+            "description": "<p>查询排序 例('name desc, id asc')</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pageIndex",
+            "description": "<p>页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>每页条数</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/area/get"
+      }
+    ],
     "filename": "pub/bll/area.js",
+    "groupTitle": "area"
+  },
+  {
+    "type": "post",
+    "url": "/api/area/del",
+    "title": "地区删除",
+    "description": "<p>地区删除</p>",
+    "name": "del",
+    "group": "area",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>用户ID</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "ids",
+            "description": "<p>pkId</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/area/del"
+      }
+    ],
+    "filename": "pub/bll/helplist.js",
     "groupTitle": "area"
   },
   {
@@ -1305,8 +1431,163 @@
         "url": "http://localhost:3000/api/area/update"
       }
     ],
+    "filename": "pub/bll/helplist.js",
+    "groupTitle": "area"
+  },
+  {
+    "type": "post",
+    "url": "/api/area/update",
+    "title": "地区修改",
+    "description": "<p>地区修改</p>",
+    "name": "update",
+    "group": "area",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>用户ID</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "dtype",
+            "description": "<p>类型</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>地区名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "double",
+            "optional": false,
+            "field": "agent_get",
+            "description": "<p>代理抽点</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "double",
+            "optional": false,
+            "field": "p_get",
+            "description": "<p>平台抽点</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>序号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pkId",
+            "description": "<p>pkId</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/area/update"
+      }
+    ],
     "filename": "pub/bll/area.js",
     "groupTitle": "area"
+  },
+  {
+    "type": "post",
+    "url": "/api/help/add",
+    "title": "添加帮助",
+    "description": "<p>添加帮助</p>",
+    "name": "Add",
+    "group": "help",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wx_id",
+            "description": "<p>用户ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "des",
+            "description": "<p>描述</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "lnglat",
+            "description": "<p>经纬度</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "address",
+            "description": "<p>地址</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>手机号</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "pubarea",
+            "description": "<p>发布地区</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/help/add"
+      }
+    ],
+    "filename": "pub/bll/helplist.js",
+    "groupTitle": "help"
   },
   {
     "type": "post",
@@ -1790,5 +2071,188 @@
     ],
     "filename": "pub/bll/roles.js",
     "groupTitle": "role___"
+  },
+  {
+    "type": "post",
+    "url": "/api/wx/user/get",
+    "title": "微信用户查询",
+    "description": "<p>微信用户查询</p>",
+    "name": "Get",
+    "group": "wxuser",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>用户ID</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "fields",
+            "description": "<p>查询字段 例('name,id') 传空代表查询所有</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "wheres",
+            "description": "<p>查询条件 例('name=0 and id=3')</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "sorts",
+            "description": "<p>查询排序 例('name desc, id asc')</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pageIndex",
+            "description": "<p>页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "pageSize",
+            "description": "<p>每页条数</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/wx/user/get"
+      }
+    ],
+    "filename": "pub/bll/wxuser.js",
+    "groupTitle": "wxuser"
+  },
+  {
+    "type": "post",
+    "url": "/api/wx/user/login",
+    "title": "微信用户登录",
+    "description": "<p>微信用户登录</p>",
+    "name": "login",
+    "group": "wxuser",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "js_code",
+            "description": "<p>code</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/wx/user/login"
+      }
+    ],
+    "filename": "pub/bll/wxuser.js",
+    "groupTitle": "wxuser"
+  },
+  {
+    "type": "post",
+    "url": "/api/wx/user/update",
+    "title": "微信用户修改",
+    "description": "<p>微信用户修改</p>",
+    "name": "update",
+    "group": "wxuser",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "openid",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "nick_name",
+            "description": "<p>昵称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "avatar_url",
+            "description": "<p>头像</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>性别</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "province",
+            "description": "<p>省</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "city",
+            "description": "<p>市</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>手机号</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "sampleRequest": [
+      {
+        "url": "http://localhost:3000/api/wx/user/update"
+      }
+    ],
+    "filename": "pub/bll/wxuser.js",
+    "groupTitle": "wxuser"
   }
 ]

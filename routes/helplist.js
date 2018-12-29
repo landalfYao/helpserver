@@ -1,7 +1,7 @@
 const router = require('koa-router')()
-const bll = require('./../pub/bll/area.js')
+const bll = require('./../pub/bll/helplist.js')
 
-router.prefix('/api/area')
+router.prefix('/api/help')
 
 router.post('/add', async (ctx, next) => {
     let result = await bll.add(ctx)
@@ -18,11 +18,6 @@ router.post('/del', async (ctx, next) => {
 
 router.post('/get', async (ctx, next) => {
     let result = await bll.getList(ctx)
-    ctx.body = result;
-})
-
-router.get('/wxget', async (ctx, next) => {
-    let result = await bll.wxget(ctx)
     ctx.body = result;
 })
 

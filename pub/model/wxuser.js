@@ -1,17 +1,16 @@
 const db = require('./../db/mysqlHelper.js')
 
 const roles = {
-    add ( args,cb ){
+    async add ( args){
         let sql = 'INSERT INTO wxuser (openid) value(?)'
         let params = [args.openid]
-        db.query2(sql, params,function(res){
-            cb(res)
-        })
+        let result = await db.query(sql,params)
+        return result
        
     },
     async update ( args ){
         let sql = 'UPDATE wxuser set nick_name=?,avatar_url=?,gender=? ,province=?,city=?,phone=? where openid = ?'
-        let params = [args.atype, args.name, args.agent_get,args.p_get, args.sort,args.openid]
+        let params = [args.nick_name, args.avatar_url, args.gender,args.province, args.city,args.phone,args.openid]
         let result = await db.query(sql,params)
         return result
     },
@@ -23,7 +22,7 @@ const roles = {
 
     async getByOpenid (openid) {
         let sql = 'select * from wxuser where openid=?'
-        let result = await db.query(sql,[openid])
+        let result =  await db.query(sql,[openid])
         return result
     },
     async getList( args ){

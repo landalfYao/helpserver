@@ -20,7 +20,8 @@ const authority = require('./routes/authority')
 const roles = require('./routes/roles')
 const area = require('./routes/area')
 const wxuser = require('./routes/wxuser')
-const secretKey = 'adfbrw32rfr23'
+const helplist = require('./routes/helplist')
+// const secretKey = 'adfbrw32rfr23'
 // error handler
 onerror(app)
 
@@ -83,7 +84,8 @@ app.use(authority.routes(),authority.allowedMethods())
 app.use(roles.routes(),roles.allowedMethods())
 app.use(area.routes(),area.allowedMethods())
 app.use(wxuser.routes(),wxuser.allowedMethods())
-// error-handling
+app.use(helplist.routes(),helplist.allowedMethods())
+// error-handling 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });

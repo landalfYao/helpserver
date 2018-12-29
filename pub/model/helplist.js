@@ -3,14 +3,14 @@ const db = require('./../db/mysqlHelper.js')
 const roles = {
 
     async add(args) {
-        let sql = 'INSERT INTO area (atype,name,p_get,sort) value(?,?,?,?)'
-        let params = [args.atype, args.name, args.p_get, args.sort]
+        let sql = 'INSERT INTO helplist (wx_id,state,des,phone,area_id) value(?,0,?,?,?)'
+        let params = [args.wx_id, args.des, args.phone, args.area_id]
         let result = await db.query(sql, params)
         return result
     },
-    async update(args) {
-        let sql = 'UPDATE area set atype=?,name=? ,p_get=?,sort=? where pk_id = ?'
-        let params = [args.atype, args.name, args.p_get, args.sort, args.pkId]
+    async updateState(args) {
+        let sql = 'UPDATE helplist set state=? where id = ?'
+        let params = [args.state, args.id]
         let result = await db.query(sql, params)
         return result
     },
@@ -20,16 +20,10 @@ const roles = {
         return result
     },
 
-
     async getList(args) {
         let result = await db.commonSelect(args)
         return result
     },
-    async wxget() {
-        let sql = 'select name,pk_id from area where atype = 2 order by sort asc'
-        let result = await db.query(sql, [])
-        return result
-    }
 
 }
 

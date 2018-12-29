@@ -169,20 +169,20 @@ var jwtFun = {
     },
     //校验权限
     async checkAuth ( ctx ) {
-        let user = await this.checkToken(ctx)
+        // let user = await this.checkToken(ctx)
         let result = retCode.Success
-        if(user.pl){
+        // if(user.pl){
             //判断是否有权限
-            if(user.payload.pk_id == config.SUPER_ADMINISTRATOR){
-                result.auth = true
-                result.uid = user.payload.pk_id
-            }else{
-                result = retCode.NoAuthority
-                result.msg = '您无权操作'
-            }
-        }else{
-            result = user
-        }
+        //     if(user.payload.pk_id == config.SUPER_ADMINISTRATOR){
+        //         result.auth = true
+        //         result.uid = user.payload.pk_id
+        //     }else{
+        //         result = retCode.NoAuthority
+        //         result.msg = '您无权操作'
+        //     }
+        // }else{
+        //     result = user
+        // }
         return result
     }
 }
@@ -218,21 +218,26 @@ function filterReturn(result){
     delete result.token
     return result
 }
-function http (url, type, data,cb,headers){
-    let options = {
-      url: url,
-      headers:headers,
-      method:type,
-      json:data
+let http = {
+    async request(url, type, data,headers){
+        let options = {
+            url: url,
+            headers:headers,
+            method:type,
+            json:data
+          }
+        return new Promise(function(resolve, reject){
+            request(options, (err, res, body) => {
+                if(res.statusCode == 200){
+                    resolve(body)
+                }else{
+                  console.log(res.statusCode)
+                }
+            })
+        })
     }
-    request(options, (err, res, body) => {
-        if(res.statusCode == 200){
-          cb(body)
-        }else{
-          console.log(res.statusCode)
-        }
-    })
-  }
+}
+
 module.exports = {
     secrets:secrets,
     ivkey:ivkey,
