@@ -47,7 +47,7 @@ const development = {
 
     //MYSQL数据库配置
     MYSQL: {
-        host: "www.ypyzy.top",
+        host: "129.28.89.58",
         user: "root",
         password: "Qwe123..",
         port: "3306",

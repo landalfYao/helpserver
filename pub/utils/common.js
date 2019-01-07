@@ -190,8 +190,7 @@ var jwtFun = {
 var commonSelect = {
     //通用查询
     async getList( ctx ){
-        let ct = await jwtFun.checkToken( ctx );
-        if(ct.pl){
+        
             let form = ctx.request.body
             const args = {
                     tables    : form.tables    ,
@@ -204,10 +203,8 @@ var commonSelect = {
 
             let result = retCode.Success
             
-            return {result,args ,ct}
-        }else{
-            return ct
-        }
+            return {result,args ,ct:{pl:true}}
+        
         
     }
     
