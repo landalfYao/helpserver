@@ -3,14 +3,14 @@ const db = require('./../db/mysqlHelper.js')
 const roles = {
 
     async add(args) {
-        let sql = 'INSERT INTO area (atype,name,p_get,sort) value(?,?,?,?)'
-        let params = [args.atype, args.name, args.p_get, args.sort]
+        let sql = 'INSERT INTO area (atype,name,sort) value(?,?,?)'
+        let params = [args.atype, args.name, args.sort]
         let result = await db.query(sql, params)
         return result
     },
     async update(args) {
-        let sql = 'UPDATE area set atype=?,name=? ,p_get=?,sort=? where pk_id = ?'
-        let params = [args.atype, args.name, args.p_get, args.sort, args.pkId]
+        let sql = 'UPDATE area set atype=?,name=? ,sort=? where pk_id = ?'
+        let params = [args.atype, args.name, args.sort, args.pkId]
         let result = await db.query(sql, params)
         return result
     },

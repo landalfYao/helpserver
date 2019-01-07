@@ -8,6 +8,10 @@ router.post('/get', async (ctx, next) => {
   let result = await userBll.getList(ctx)
   ctx.body = result;
 })
+router.post('/get/aid', async (ctx, next) => {
+  let result = await userBll.getInfoByArea(ctx)
+  ctx.body = result;
+})
 router.post('/register', async (ctx, next) => {
   let result = await userBll.register(ctx)
   ctx.body = result;
@@ -16,7 +20,7 @@ router.post('/login', async (ctx, next) => {
   let result = await userBll.login(ctx)
   ctx.body = result;
 })
-router.get('/info', async (ctx, next) => {
+router.post('/info', async (ctx, next) => {
   let result = await userBll.getUserInfo(ctx)
   ctx.body = result;
 })
@@ -33,11 +37,11 @@ router.post('/update/role', async (ctx, next) => {
   ctx.body = result;
 })
 router.post('/state/disable', async (ctx, next) => {
-  let result = await userBll.disableUser(ctx,'DISABLE')
+  let result = await userBll.disableUser(ctx, 'DISABLE')
   ctx.body = result;
 })
 router.post('/state/available', async (ctx, next) => {
-  let result = await userBll.disableUser(ctx,'AVAILABLE')
+  let result = await userBll.disableUser(ctx, 'AVAILABLE')
   ctx.body = result;
 })
 

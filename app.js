@@ -21,13 +21,14 @@ const roles = require('./routes/roles')
 const area = require('./routes/area')
 const wxuser = require('./routes/wxuser')
 const helplist = require('./routes/helplist')
+const dlServer = require('./routes/dlServer')
 // const secretKey = 'adfbrw32rfr23'
 // error handler
 onerror(app)
 
 // middlewares
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 // app.use(jwtKoa({secretKey}).unless({
 //         path: ['/^\/api\/user\/login/,/^\/api\/user\/register/,/^\/apidoc\/index.html#api-User-Login/'] 
@@ -50,27 +51,27 @@ app.use(async (ctx, next) => {
 })
 
 app.keys = ['Porschev'];
-const redis_conf = {  
+const redis_conf = {
   key: 'Porschev',
   maxAge: config.REDIS.maxAge,
   overwrite: true,
-  httpOnly: true,  
+  httpOnly: true,
   rolling: false,
   sign: true,
   store: new RedisStore({
     host: config.REDIS.host,
-    port: config.REDIS.port,    
-    password: config.REDIS.password    
+    port: config.REDIS.port,
+    password: config.REDIS.password
   })
 };
 
 
-    app.use(cors({
-    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization', 'Date'],
-    maxAge: 100,
-    credentials: true,
-    allowMethods: ['GET', 'POST', 'OPTIONS'],
-    allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Custom-Header', 'anonymous','token','uid'],
+app.use(cors({
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization', 'Date'],
+  maxAge: 100,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Custom-Header', 'anonymous', 'token', 'uid'],
 }));
 
 app.use(session(redis_conf, app));
@@ -80,11 +81,12 @@ app.use(index.routes(), index.allowedMethods())
 app.use(user.routes(), user.allowedMethods())
 app.use(secret.routes(), secret.allowedMethods())
 app.use(authorityCategory.routes(), authorityCategory.allowedMethods())
-app.use(authority.routes(),authority.allowedMethods())
-app.use(roles.routes(),roles.allowedMethods())
-app.use(area.routes(),area.allowedMethods())
-app.use(wxuser.routes(),wxuser.allowedMethods())
-app.use(helplist.routes(),helplist.allowedMethods())
+app.use(authority.routes(), authority.allowedMethods())
+app.use(roles.routes(), roles.allowedMethods())
+app.use(area.routes(), area.allowedMethods())
+app.use(wxuser.routes(), wxuser.allowedMethods())
+app.use(helplist.routes(), helplist.allowedMethods())
+app.use(dlServer.routes(), dlServer.allowedMethods())
 // error-handling 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
