@@ -12,14 +12,14 @@ const config = require('./../config/config')
 const db = require('./../db/mysqlHelper')
 const request = require("request");
 let loginState = {
-    data:{},
-    set(key,value){
+    data: {},
+    set(key, value) {
         this.data[key] = value
     },
-    get(key){
+    get(key) {
         return this.data[key]
     },
-    remove(key){
+    remove(key) {
         delete this.data[key]
     }
 }
@@ -29,7 +29,7 @@ let loginState = {
  * @param: data: 待加密的内容； dataEncoding: 内容编码; key: 秘钥； 
  *         keyEncoding: 秘钥编码； padding: 自动填充加密向量
  */
-secrets.encrypt = function(data, dataEncoding, key, keyEncoding, padding) {
+secrets.encrypt = function (data, dataEncoding, key, keyEncoding, padding) {
     let keyBuf = null;
 
     if (key instanceof Buffer) {
@@ -58,7 +58,7 @@ secrets.encrypt = function(data, dataEncoding, key, keyEncoding, padding) {
  * @param: data: 待解密的内容； dataEncoding: 内容编码; key: 秘钥； 
  *         keyEncoding: 秘钥编码； padding: 自动填充加密向量
  */
-secrets.decypt = function(data, dataEncoding, key, keyEncoding, padding) {
+secrets.decypt = function (data, dataEncoding, key, keyEncoding, padding) {
 
     let keyBuf = null;
     if (key instanceof Buffer) {
@@ -83,96 +83,101 @@ secrets.decypt = function(data, dataEncoding, key, keyEncoding, padding) {
     return str3.toString('utf8');
 };
 //md5加密
-function md5(data){
+function md5(data) {
     let md5 = crypto.createHash('md5');
     md5.update(data);
     let sign = md5.digest('hex');
     return sign
 }
 //MD5解密
-function md5d(data){
+function md5d(data) {
     return crypto.createHash('md5').update(data, 'utf8').digest("hex")
 }
 
 var jwtFun = {
     async verify(token) {
         let res = await jwt.verify(token, secretKey, function (err, decoded) {
-            if (err){
+            if (err) {
                 return -1 //会输出123，如果过了60秒，则有错误。
-            }else{
+            } else {
                 return decoded
             }
         })
         return res
     },
     async sign(userToken) {
-        return jwt.sign(userToken, secretKey, {expiresIn: '1h'})
+        return jwt.sign(userToken, secretKey, {
+            expiresIn: '1h'
+        })
     },
     //token uid 校验
-    async checkToken ( ctx ) {
+    async checkToken(ctx) {
         let token = ctx.header.token
         let uid = ctx.header.uid
         let payload = null
-        if(loginState.get('y'+uid) == 1){
-            if(token){
+        if (loginState.get('y' + uid) == 1) {
+            if (token) {
                 payload = await this.verify(token)
-                if(payload == undefined || payload == -1 || payload==''){
+                if (payload == undefined || payload == -1 || payload == '') {
                     let result = retCode.SessionExpired
                     result.msg = 'token 错误'
                     return result
-                }else{
+                } else {
                     let isroleAuth = true
-                    if(isroleAuth || uid == 1){
-                        if(payload.pk_id == uid){
-                            return {pl:1,payload:payload}
-                        }else{
+                    if (isroleAuth || uid == 1) {
+                        if (payload.pk_id == uid) {
+                            return {
+                                pl: 1,
+                                payload: payload
+                            }
+                        } else {
                             let result = retCode.SessionExpired
                             result.msg = 'token 校验未通过'
                             return result
                         }
-                    }else{
+                    } else {
                         let result = retCode.NoAuthority
                         result.msg = '对不起，您无权操作'
                         return result
                     }
-                    
+
                 }
-            }else{
+            } else {
                 let result = retCode.SessionExpired
                 result.msg = 'token 错误'
                 return result
             }
-            
-            
-        }else{
+
+
+        } else {
             let result = retCode.LoginOverdue
             result.msg = '登录态已失效，请重新登录'
             return result
         }
-        
+
     },
-    async checkRoleAuth(api,id){
+    async checkRoleAuth(api, id) {
         let apiUrl = api
-        if(id){
-            let sql = 'Select y_authority.api_url from y_role_auth_grant,y_authority where '+
-            'y_role_auth_grant.role_id='+id+' and y_authority.api_url = "'+apiUrl+'"'
-            let bkdata = await db.query(sql,[])
-            if(bkdata.length > 0){
+        if (id) {
+            let sql = 'Select y_authority.api_url from y_role_auth_grant,y_authority where ' +
+                'y_role_auth_grant.role_id=' + id + ' and y_authority.api_url = "' + apiUrl + '"'
+            let bkdata = await db.query(sql, [])
+            if (bkdata.length > 0) {
                 return true
-            }else{
+            } else {
                 return false
             }
-            
-        }else{
+
+        } else {
             return false
         }
     },
     //校验权限
-    async checkAuth ( ctx ) {
+    async checkAuth(ctx) {
         // let user = await this.checkToken(ctx)
         let result = retCode.Success
         // if(user.pl){
-            //判断是否有权限
+        //判断是否有权限
         //     if(user.payload.pk_id == config.SUPER_ADMINISTRATOR){
         //         result.auth = true
         //         result.uid = user.payload.pk_id
@@ -189,46 +194,53 @@ var jwtFun = {
 
 var commonSelect = {
     //通用查询
-    async getList( ctx ){
-        
-            let form = ctx.request.body
-            const args = {
-                    tables    : form.tables    ,
-                    wheres    : form.wheres    ,
-                    fields    : form.fields    ,
-                    sorts     : form.sorts     ,
-                    pageIndex : form.pageIndex ,
-                    pageSize  : form.pageSize  ,
-            }
+    async getList(ctx) {
 
-            let result = retCode.Success
-            
-            return {result,args ,ct:{pl:true}}
-        
-        
+        let form = ctx.request.body
+        const args = {
+            tables: form.tables,
+            wheres: form.wheres,
+            fields: form.fields,
+            sorts: form.sorts,
+            pageIndex: form.pageIndex,
+            pageSize: form.pageSize,
+        }
+
+        let result = retCode.Success
+
+        return {
+            result,
+            args,
+            ct: {
+                pl: true
+            }
+        }
+
+
     }
-    
+
 }
-function filterReturn(result){
+
+function filterReturn(result) {
     delete result.uid
     delete result.auth
     delete result.token
     return result
 }
 let http = {
-    async request(url, type, data,headers){
+    async request(url, type, data, headers) {
         let options = {
             url: url,
-            headers:headers,
-            method:type,
-            json:data
-          }
-        return new Promise(function(resolve, reject){
+            headers: headers,
+            method: type,
+            json: data
+        }
+        return new Promise(function (resolve, reject) {
             request(options, (err, res, body) => {
-                if(res.statusCode == 200){
+                if (res.statusCode == 200) {
                     resolve(body)
-                }else{
-                  console.log(res.statusCode)
+                } else {
+                    console.log(res.statusCode)
                 }
             })
         })
@@ -236,13 +248,13 @@ let http = {
 }
 
 module.exports = {
-    secrets:secrets,
-    ivkey:ivkey,
-    http:http,
-    md5:md5,
-    md5d:md5d,
-    jwtFun : jwtFun,
-    commonSelect:commonSelect,
-    loginState:loginState,
-    filterReturn:filterReturn
+    secrets: secrets,
+    ivkey: ivkey,
+    http: http,
+    md5: md5,
+    md5d: md5d,
+    jwtFun: jwtFun,
+    commonSelect: commonSelect,
+    loginState: loginState,
+    filterReturn: filterReturn
 }

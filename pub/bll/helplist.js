@@ -36,6 +36,25 @@ const roles = {
     }
     return com.filterReturn(result);
   },
+
+  async updateState(ctx) {
+    let form = ctx.request.body;
+    let result = retCode.Success;
+    let bkdata = await model.updateState(form);
+    if (bkdata.errno) {
+      if (bkdata.errno == 1062) {
+        result = retCode.Fail;
+        result.msg = "失败";
+      } else {
+        result = retCode.ServerError;
+        result.msg = "服务端错误";
+      }
+    } else {
+      result.data = bkdata.insertId;
+      result.msg = "修改成功";
+    }
+    return com.filterReturn(result);
+  },
   /**
    * @api {post} /api/area/update 地区修改
    * @apiDescription 地区修改
@@ -121,10 +140,10 @@ const roles = {
     return com.filterReturn(result);
   },
   /**
-   * @api {post} /api/help/get 地区查询
-   * @apiDescription 地区查询
+   * @api {post} /api/help/get 查询
+   * @apiDescription 查询
    * @apiName Get
-   * @apiGroup area
+   * @apiGroup help
    * @apiHeader {string} token token
    * @apiHeader {string} uid 用户ID
    * @apiParam {string} fields 查询字段 例('name,id') 传空代表查询所有
@@ -137,11 +156,11 @@ const roles = {
    * @apiVersion 1.0.0
    */
   async getList(ctx) {
-    ctx.request.body.fields = "helplist.*,wxuser.avatar_url,wxuser.nick_name,wxuser.id "
+    ctx.request.body.fields = "helplist.*,wxuser.avatar_url,wxuser.nick_name "
     ctx.request.body.tables = "helplist,wxuser";
     ctx.request.body.wheres =
       " helplist.wx_id = wxuser.id and helplist.is_delete = 0 and helplist.state in (1,2,3) and helplist.title in ('校园跑腿','上面维修','代替服务','其他帮助')";
-      ctx.request.body.sorts = 'helplist.create_time desc'
+    ctx.request.body.sorts = 'helplist.create_time desc'
     let result = await com.commonSelect.getList(ctx);
     if (result.args) {
       let userResult = await model.getList(result.args, result.ct);
@@ -155,6 +174,31 @@ const roles = {
     } else {
       return com.filterReturn(result);
     }
-  }
+  },
+
+  async getList2(ctx) {
+    ctx.request.body.tables = 'helplist,wxuser'
+    ctx.request.body.wheres += ' and wxuser.id = helplist.wx_id '
+    let auth = await com.jwtFun.checkAuth(ctx)
+    if (auth.code == 1) {
+      let result = await com.commonSelect.getList(ctx)
+      if (result.args) {
+        let userResult = await model.getList(result.args, result.ct)
+        let bkdata = result.result
+        bkdata.data = userResult
+        let ct = result.ct.payload
+
+        let re = retCode.Success
+        re.data = userResult
+        return com.filterReturn(re)
+      } else {
+        return com.filterReturn(result)
+      }
+    } else {
+      return com.filterReturn(auth)
+    }
+
+  },
+
 };
 module.exports = roles;
