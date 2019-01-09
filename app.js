@@ -23,6 +23,14 @@ const wxuser = require('./routes/wxuser')
 const helplist = require('./routes/helplist')
 const dlServer = require('./routes/dlServer')
 const file = require('./routes/file')
+
+const koaBody = require('koa-body');
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+    maxFileSize: 20000 * 1024 * 1024 // 设置上传文件大小最大限制，默认200M
+  }
+}));
 // const secretKey = 'adfbrw32rfr23'
 // error handler
 onerror(app)
