@@ -58,18 +58,11 @@ const roles = {
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
-            let bkdata = await model.update({
-                name: form.name,
-                atype: form.atype,
-                sort: form.sort,
-                agent_get: form.agent_get,
-                p_get: form.p_get,
-                pkId: form.pkId
-            })
+            let bkdata = await model.update(form)
             if (bkdata.errno) {
                 if (bkdata.errno == 1062) {
                     result = retCode.Fail
-                    result.msg = '该地区名称已存在'
+                    result.msg = '该名称已存在'
                 } else {
                     result = retCode.ServerError
                     result.msg = '服务端错误'
@@ -78,13 +71,7 @@ const roles = {
                 result.data = bkdata.changedRows
                 result.msg = '修改成功'
             }
-            db.setLog({
-                uid: auth.uid,
-                ped_operation: '角色修改',
-                operation_code: result.code,
-                operation_msg: result.codeMsg,
-                api_url: '/api/role/update'
-            })
+
         } else {
             result = auth
         }
@@ -150,6 +137,25 @@ const roles = {
         }
 
     },
+    async getById(ctx) {
+        let result = retCode.Success
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if (auth.code == 1) {
+            let bkdata = await model.getListById(ctx.request.body.id)
+            if (bkdata.errno) {
+                result = retCode.ServerError
+                result.msg = '服务端错误'
+            } else {
+
+                delete result.uid
+                result.msg = '获取成功'
+                result.data = bkdata
+            }
+            return com.filterReturn(result)
+        } else {
+            return com.filterReturn(auth)
+        }
+    }
 
 }
 module.exports = roles

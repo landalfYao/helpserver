@@ -25,6 +25,11 @@ const roles = {
         let result = await db.query(sql, [openid])
         return result
     },
+    async getById(id) {
+        let sql = 'select * from wxuser where id=?'
+        let result = await db.query(sql, [id])
+        return result
+    },
     async getList(args) {
         let result = await db.commonSelect(args)
         return result

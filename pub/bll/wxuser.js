@@ -69,7 +69,8 @@ const roles = {
                     result.msg = '服务端错误'
                 }
             } else {
-                result.data = bkdata.changedRows
+                let data = await model.getById(form.id)
+                result.data = data[0]
                 result.msg = '修改成功'
             }
 
