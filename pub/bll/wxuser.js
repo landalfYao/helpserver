@@ -68,6 +68,23 @@ const roles = {
         return com.filterReturn(result);
 
     },
+    async getById(ctx) {
+        let form = ctx.request.body;
+        let result = retCode.Success;
+        let bkdata = await model.getById(form.id);
+        if (bkdata.errno) {
+            if (bkdata.errno == 1062) {
+                result = retCode.Fail;
+                result.msg = "失败";
+            } else {
+                result = retCode.ServerError;
+                result.msg = "服务端错误";
+            }
+        } else {
+            result.data = bkdata[0];
+        }
+        return com.filterReturn(result);
+    },
     async getInfoById(ctx) {
         let form = ctx.request.body;
         let result = retCode.Success;
@@ -98,8 +115,8 @@ const roles = {
                 result.msg = "服务端错误";
             }
         } else {
-            result.data = bkdata.changeRow;
-            result.msg = "添加成功";
+            result.data = bkdata;
+            result.msg = "修改成功";
         }
         return com.filterReturn(result);
 
@@ -173,6 +190,26 @@ const roles = {
         }
 
     },
+    async getComList(ctx) {
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if (auth.code == 1) {
+            let result = await com.commonSelect.getList(ctx)
+            if (result.args) {
+                let userResult = await model.getList(result.args, result.ct)
+                let bkdata = result.result
+                bkdata.data = userResult
+                let ct = result.ct.payload
+
+                let re = retCode.Success
+                re.data = userResult
+                return com.filterReturn(re)
+            } else {
+                return com.filterReturn(result)
+            }
+        } else {
+            return com.filterReturn(auth)
+        }
+    }
 
 }
 module.exports = roles

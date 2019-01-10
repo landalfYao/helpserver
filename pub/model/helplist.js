@@ -9,8 +9,26 @@ const roles = {
         return result
     },
     async updateState(args) {
-        let sql = 'UPDATE helplist set state=? where id = ?'
-        let params = [args.state, args.id]
+        let sql = 'UPDATE helplist set state=?,is_pay=? where id = ?'
+        let params = [args.state, args.is_pay, args.id]
+        let result = await db.query(sql, params)
+        return result
+    },
+    async jd(args) {
+        let sql = 'update helplist set state = 2,jd_id=? where id = ?'
+        let params = [args.jd_id, args.id]
+        let result = await db.query(sql, params)
+        return result
+    },
+    async confirm(id) {
+        let sql = 'update helplist set state = 3 where id = ?'
+        let params = [id]
+        let result = await db.query(sql, params)
+        return result
+    },
+    async updateOrderNum(oid, id) {
+        let sql = 'UPDATE helplist set order_num=? where id = ?'
+        let params = [oid, id]
         let result = await db.query(sql, params)
         return result
     },

@@ -5,11 +5,23 @@ const wxpay = require('./../pub/bll/wxpay')
 router.prefix('/api/help')
 
 router.post('/add', async (ctx, next) => {
-    let result = await wxpay.wxpay(ctx)
+    let result = await wxpay.wxpay(ctx, 'add')
+    ctx.body = result;
+})
+router.post('/pay', async (ctx, next) => {
+    let result = await wxpay.wxpay(ctx, 'update')
+    ctx.body = result;
+})
+router.post('/jd', async (ctx, next) => {
+    let result = await bll.updateJd(ctx)
     ctx.body = result;
 })
 router.post('/update', async (ctx, next) => {
     let result = await bll.update(ctx)
+    ctx.body = result;
+})
+router.post('/confirm', async (ctx, next) => {
+    let result = await bll.updateConfirm(ctx)
     ctx.body = result;
 })
 router.post('/update/state', async (ctx, next) => {

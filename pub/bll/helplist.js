@@ -55,23 +55,43 @@ const roles = {
     }
     return com.filterReturn(result);
   },
-  /**
-   * @api {post} /api/area/update 地区修改
-   * @apiDescription 地区修改
-   * @apiName update
-   * @apiGroup area
-   * @apiHeader {string} token token
-   * @apiHeader {string} uid 用户ID
-   * @apiParam {string} dtype 类型
-   * @apiParam {string} name 地区名
-   * @apiParam {double} agent_get 代理抽点
-   * @apiParam {double} p_get 平台抽点
-   * @apiParam {int} sort  序号
-   * @apiParam {int} pkId  pkId
-   * @apiVersion 1.0.0
-   * @apiSampleRequest http://localhost:3000/api/area/update
-   * @apiVersion 1.0.0
-   */
+  async updateConfirm(ctx) {
+    let form = ctx.request.body;
+    let result = retCode.Success;
+    let bkdata = await model.confirm(form.id);
+    if (bkdata.errno) {
+      if (bkdata.errno == 1062) {
+        result = retCode.Fail;
+        result.msg = "失败";
+      } else {
+        result = retCode.ServerError;
+        result.msg = "服务端错误";
+      }
+    } else {
+      result.data = bkdata.insertId;
+      result.msg = "修改成功";
+    }
+    return com.filterReturn(result);
+  },
+  async updateJd(ctx) {
+    let form = ctx.request.body;
+    let result = retCode.Success;
+    let bkdata = await model.jd(form);
+    if (bkdata.errno) {
+      if (bkdata.errno == 1062) {
+        result = retCode.Fail;
+        result.msg = "失败";
+      } else {
+        result = retCode.ServerError;
+        result.msg = "服务端错误";
+      }
+    } else {
+      result.data = bkdata.insertId;
+      result.msg = "修改成功";
+    }
+    return com.filterReturn(result);
+  },
+
   async update(ctx) {
     let form = ctx.request.body;
     let result = retCode.Success;

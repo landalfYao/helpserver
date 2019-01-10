@@ -6,7 +6,7 @@ const cryptoMO = require("crypto"); // MD5算法
 const parseString = require("xml2js").parseString; // xml转js对象
 const key = config.Mch_key;
 const wxpay = {
-    async wxpay(ctx) {
+    async wxpay(ctx, type) {
         let param = ctx.request.body;
         let openid = param.openid;
 
@@ -42,9 +42,16 @@ const wxpay = {
                     timestamp
                 ); // 签名
                 param.order_num = out_trade_no
-                let addorder = await model.add(param)
+
+                let addorder = ''
+                if (type == 'add') {
+                    addorder = await model.add(param)
+                    returnValue.oid = addorder.insertId
+                } else {
+                    addorder = await model.updateOrderNum(out_trade_no, param.oid)
+                    returnValue.oid = param.oid
+                }
                 returnValue.code = 1
-                returnValue.oid = addorder.insertId
 
 
             } else {

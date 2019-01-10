@@ -15,9 +15,16 @@ router.post('/del', async (ctx, next) => {
     let result = await bll.del(ctx)
     ctx.body = result;
 })
-
+router.post('/get/com', async (ctx, next) => {
+    let result = await bll.getComList(ctx)
+    ctx.body = result;
+})
 router.post('/get', async (ctx, next) => {
     let result = await bll.getList(ctx)
+    ctx.body = result;
+})
+router.post('/get/id', async (ctx, next) => {
+    let result = await bll.getById(ctx)
     ctx.body = result;
 })
 router.post('/get/info/wxid', async (ctx, next) => {
@@ -37,6 +44,17 @@ router.post('/update/info', async (ctx, next) => {
     ctx.body = result;
 })
 router.post('/update/info/state', async (ctx, next) => {
+    let result = await bll.updateInfoState(ctx)
+    ctx.body = result;
+})
+router.post('/info/pass', async (ctx, next) => {
+    ctx.request.body.state = 1
+    ctx.request.body.msg = '通过审核'
+    let result = await bll.updateInfoState(ctx)
+    ctx.body = result;
+})
+router.post('/info/unpass', async (ctx, next) => {
+    ctx.request.body.state = 2
     let result = await bll.updateInfoState(ctx)
     ctx.body = result;
 })
