@@ -37,6 +37,11 @@ const roles = {
         let result = await db.query(sql, params);
         return result;
     },
+    async updateWX(args){
+        let sql = 'update wxuser set nick_name=?,phone=?,dphone=? where id=?'
+        let result = await db.query(sql, [args.nick_name,args.phone,args.dphone,args.id]);
+        return result;
+    },
     async updateInfoState(args) {
         let sql = "update userinfo set state = ?,msg=? where id= ? ";
         let result = await db.query(sql, [args.state, args.msg, args.id]);

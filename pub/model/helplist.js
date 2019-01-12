@@ -3,8 +3,8 @@ const db = require('./../db/mysqlHelper.js')
 const roles = {
 
     async add(args) {
-        let sql = 'INSERT INTO helplist (wx_id,title,state,des,a_id,total_fee,form_id,mu,qi,url,cai,order_num) value(?,?,?,?,?,?,?,?,?,?,?,?)'
-        let params = [args.wx_id, args.title, 0, args.des, args.a_id, args.total_fee, args.form_id, args.mu, args.qi, args.url, args.cai, args.order_num]
+        let sql = 'INSERT INTO helplist (wx_id,title,state,des,a_id,total_fee,form_id,mu,qi,yjm,cai,order_num,openid,page) value(?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+        let params = [args.wx_id, args.title, 0, args.des, args.a_id, args.total_fee, args.form_id, args.mu, args.qi, args.yjm, args.cai, args.order_num,args.openid,args.page]
         let result = await db.query(sql, params)
         return result
     },

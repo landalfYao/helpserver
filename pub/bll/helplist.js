@@ -2,6 +2,7 @@ const model = require("./../model/helplist.js");
 const retCode = require("./../utils/retcode.js");
 const com = require("../utils/common");
 const db = require("./../db/mysqlHelper.js");
+const token = require('../config/wxtoken')
 const roles = {
   /**
    * @api {post} /api/help/add 添加帮助
@@ -86,7 +87,17 @@ const roles = {
         result.msg = "服务端错误";
       }
     } else {
-      result.data = bkdata.insertId;
+      token.msgModel(form.openid,'8STlOtBZ4TrivsA8uD_5_SIGjYzWJve29Jm4wd3Q2Sk',
+        form.form_id,'/pages/order/detail/detail?id='+form.id,
+        {
+          "keyword1": {
+            "value": form.order_num
+          },
+          "keyword2": {
+            "value": form.title
+          }
+        },'')
+      result.data = bkdata.changedRows;
       result.msg = "修改成功";
     }
     return com.filterReturn(result);

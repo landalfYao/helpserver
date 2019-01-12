@@ -11,6 +11,10 @@ router.post('/update', async (ctx, next) => {
     let result = await bll.update(ctx)
     ctx.body = result;
 })
+router.post('/update/wx', async (ctx, next) => {
+    let result = await bll.updateWX(ctx)
+    ctx.body = result;
+})
 router.post('/del', async (ctx, next) => {
     let result = await bll.del(ctx)
     ctx.body = result;
