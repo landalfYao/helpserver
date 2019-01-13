@@ -23,6 +23,8 @@ const wxuser = require('./routes/wxuser')
 const helplist = require('./routes/helplist')
 const dlServer = require('./routes/dlServer')
 const file = require('./routes/file')
+const address = require('./routes/address')
+const addressCate = require('./routes/addressCate')
 
 const koaBody = require('koa-body');
 app.use(koaBody({
@@ -97,6 +99,8 @@ app.use(wxuser.routes(), wxuser.allowedMethods())
 app.use(helplist.routes(), helplist.allowedMethods())
 app.use(dlServer.routes(), dlServer.allowedMethods())
 app.use(file.routes(), file.allowedMethods())
+app.use(address.routes(), address.allowedMethods())
+app.use(addressCate.routes(), addressCate.allowedMethods())
 // error-handling 
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
