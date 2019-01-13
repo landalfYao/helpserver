@@ -91,6 +91,11 @@ const roles = {
     async getList(args) {
         let result = await db.commonSelect(args);
         return result;
+    },
+    async updateDefAddress(args){
+        let sql = 'update wxuser set default_address=? where id=?'
+        let result = await db.query(sql, [args.default_address,args.id]);
+        return result;
     }
 };
 
