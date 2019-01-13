@@ -57,7 +57,7 @@ const development = {
   APP_SECRET: "206dd03f37c7618f0397c5e672337065",
   Mch_id: "1513123291",
   Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1",
-  uploadPath: "http://129.28.89.58:3333/uploads/files/",
+  uploadPath: "http://localhost:3333/uploads/files/",
   getWxPayOrdrID: function() {
     var myDate = new Date();
     var year = myDate.getFullYear();
