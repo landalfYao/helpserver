@@ -3,6 +3,7 @@ const fs = require('fs')
 const model = require('./../model/file')
 const com = require('../utils/common')
 const retCode = require('../utils/retcode')
+
 function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
@@ -28,8 +29,7 @@ let app = {
             size: file.size,
             realname: pat,
             type: file.type,
-            wx_id: form.wx_id,
-            a_id: form.a_id
+            wx_id: form.wx_id
         })
 
         let returnData = {
@@ -43,21 +43,27 @@ let app = {
         reader.pipe(upStream);
         return returnData;
     },
-    async delFile(ctx) {
+    async updateTemp(ctx) {
+        let form = ctx.request.body
+        let result = retCode.Success
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if (auth.code == 1) {
+            let bkdata = await model.updateTemp(
+                form.id
+            )
+            if (bkdata.errno) {
+                result = retCode.ServerError
+                result.msg = '服务端错误'
+            } else {
+                result.data = bkdata.changedRows
+            }
 
-        // if (fs.existsSync("./wen.txt")) {
-        //     fs.unlink("./wen.txt", function (err) {
-        //         if (err) {
-        //             console.error();
-        //             throw err;
-        //         }
-        //         console.log('文件删除成功');
-        //     });
-        // } else {
-        //     console.log("文件不存在");
-        // }
+        } else {
+            result = auth
+        }
+        return com.filterReturn(result)
     },
-    async getList(ctx){
+    async getList(ctx) {
         ctx.request.body.tables = 'files'
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {

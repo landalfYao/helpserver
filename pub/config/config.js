@@ -57,8 +57,8 @@ const development = {
   APP_SECRET: "206dd03f37c7618f0397c5e672337065",
   Mch_id: "1513123291",
   Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1",
-  uploadPath: "http://localhost:3333/uploads/files/",
-  getWxPayOrdrID: function() {
+  uploadPath: "https://hapi.ypyzy.top/uploads/files/",
+  getWxPayOrdrID: function () {
     var myDate = new Date();
     var year = myDate.getFullYear();
     var mouth = myDate.getMonth() + 1;
