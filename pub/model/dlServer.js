@@ -3,14 +3,14 @@ const db = require('./../db/mysqlHelper.js')
 const roles = {
 
     async add(args) {
-        let sql = 'INSERT INTO dl_server (dl_id,server_name,dl_sy,user_sy,p_sy,is_show,price_gui,des,icon) value(?,?,?,?,?,?,?,?,?)'
-        let params = [args.dl_id, args.server_name, args.dl_sy, args.user_sy, args.p_sy, args.is_show, args.price_gui, args.des, args.icon]
+        let sql = 'INSERT INTO dl_server (dl_id,server_name,dl_sy,user_sy,p_sy,is_show,price_gui,des,icon,jdr) value(?,?,?,?,?,?,?,?,?,?)'
+        let params = [args.dl_id, args.server_name, args.dl_sy, args.user_sy, args.p_sy, args.is_show, args.price_gui, args.des, args.icon, args.jdr]
         let result = await db.query(sql, params)
         return result
     },
     async update(args) {
-        let sql = 'UPDATE dl_server set dl_sy=?,user_sy=?,p_sy=?,is_show=?,price_gui=?,des=?,icon=? where id = ?'
-        let params = [args.dl_sy, args.user_sy, args.p_sy, args.is_show, args.price_gui, args.des, args.icon, args.id]
+        let sql = 'UPDATE dl_server set dl_sy=?,user_sy=?,p_sy=?,is_show=?,price_gui=?,des=?,icon=?,jdr=? where id = ?'
+        let params = [args.dl_sy, args.user_sy, args.p_sy, args.is_show, args.price_gui, args.des, args.icon, args.jdr, args.id]
         let result = await db.query(sql, params)
         return result
     },
