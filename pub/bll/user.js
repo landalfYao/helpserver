@@ -105,7 +105,7 @@ const user = {
                     result.msg = '旧密码与新密码不能相等'
                 } else {
                     let isOldTrue = await usermodel.getByIdAndPassword({
-                        uid: auth.uid,
+                        uid: ctx.header.uid,
                         password: com.md5(form.oldPwd)
                     })
                     if (isOldTrue.errno) {
@@ -115,22 +115,16 @@ const user = {
                         if (isOldTrue.length == 1) {
                             if (form.newPwd == form.confirmPwd) {
                                 let resDa = await usermodel.updatePwd({
-                                    uid: auth.uid,
+                                    uid: ctx.header.uid,
                                     password: com.md5(form.newPwd)
                                 })
                                 if (resDa.errno) {
                                     result = retCode.ServerError
                                     result.msg = '服务端错误'
                                 } else {
-                                    db.setLog({
-                                        uid: auth.uid,
-                                        ped_operation: '修改密码',
-                                        operation_code: result.code,
-                                        operation_msg: result.codeMsg,
-                                        api_url: '/api/user/update/pwd'
-                                    })
-                                    if (com.loginState.get('y' + auth.uid) == 1) {
-                                        com.loginState.remove('y' + auth.uid)
+
+                                    if (com.loginState.get('y' + ctx.header.uid) == 1) {
+                                        com.loginState.remove('y' + ctx.header.uid)
                                     }
                                     delete result.uid
                                     result.msg = '密码修改成功'
@@ -366,8 +360,9 @@ const user = {
                             username: form.username,
                             password: com.md5(form.password),
                             dtype: form.dtype,
-                            dcity: form.dcity,
-                            phone: form.phone
+                            a_id: form.a_id,
+                            phone: form.phone,
+                            deadline: form.deadline
                         })
                         if (res.errno) {
                             return {
@@ -410,6 +405,7 @@ const user = {
 
         if (result.code == 1) {
             form.password = com.secrets.decypt(form.password, 'base64', com.ivkey, 'hex', true)
+
             form.password = com.md5(form.password)
             let res = null
             //登录方式，手机号/用户名/邮箱

@@ -241,8 +241,8 @@ const roles = {
     ctx.request.body.fields = "helplist.*,wxuser.avatar_url,wxuser.nick_name "
     ctx.request.body.tables = "helplist,wxuser";
     ctx.request.body.wheres =
-      " helplist.wx_id = wxuser.id and helplist.is_delete = 0 and helplist.state in (1,2,3) and helplist.title in ('校园跑腿','上门维修','代替服务','其他帮助')";
-    ctx.request.body.sorts = 'helplist.create_time desc'
+      " helplist.wx_id = wxuser.id and helplist.is_delete = 0 and helplist.state in (1,2,3) and helplist.title in ('校园跑腿','上门维修','代替服务','其他帮助') and helplist.a_id=" + ctx.request.body.a_id;
+    ctx.request.body.sorts = ' helplist.create_time desc'
     let result = await com.commonSelect.getList(ctx);
     if (result.args) {
       let userResult = await model.getList(result.args, result.ct);
