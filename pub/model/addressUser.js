@@ -19,7 +19,11 @@ const app = {
         let result = await db.query(sql, [])
         return result
     },
-
+    async getById(id) {
+        let sql = 'select * from address_user where id =' + id
+        let result = await db.query(sql, [])
+        return result
+    },
 
     async getList(args) {
         let result = await db.commonSelect(args)

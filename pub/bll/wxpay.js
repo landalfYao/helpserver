@@ -1,5 +1,5 @@
 const model = require("./../model/helplist.js");
-const retCode = require("./../utils/retcode.js");
+// const retCode = require("./../utils/retcode.js");
 const com = require("../utils/common");
 const config = require('../config/config');
 const cryptoMO = require("crypto"); // MD5算法
@@ -20,7 +20,6 @@ const wxpay = {
         let timestamp = Math.round(new Date().getTime() / 1000); // 当前时间
 
         let bodyData = await this.bodyData(body, nonce_str, openid, out_trade_no, spbill_create_ip, total_fee, notify_url)
-
         // 微信小程序统一下单接口
         let urlStr = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         let cbdata = await com.http.request(urlStr, "POST", bodyData, {})
@@ -200,22 +199,6 @@ const wxpay = {
     guid() {
         return (this.S4() + this.S4() + this.S4() + this.S4() + this.S4() + this.S4() + this.S4() + this.S4());
     },
-    paysignjsapi: function (appid, mch_id, nonce_str, out_refund_no, out_trade_no, refund_fee, total_fee) {
-        var ret = {
-            appid: appid,
-            mch_id: mch_id,
-            nonce_str: nonce_str,
-            // notify_url: notify_url,
-            out_refund_no: out_refund_no,
-            out_trade_no: out_trade_no,
-            refund_fee: refund_fee,
-            total_fee: total_fee,
-        };
-        var string = this.raw(ret);
-        string = string + '&key=' + key; //key为在微信商户平台(pay.weixin.qq.com)-->账户设置-->API安全-->密钥设置 
-        var crypto = require('crypto');
-        var sign = crypto.createHash('md5').update(string, 'utf8').digest('hex');
-        return sign.toUpperCase();
-    },
+
 }
 module.exports = wxpay

@@ -1,5 +1,5 @@
 const request = require('request');
-const Q = require("q");
+// const Q = require("q");
 const crypto = require('crypto');
 const fs = require('fs');
 // 需要的参数设置 自行定义
@@ -96,7 +96,7 @@ let WxPayRefund = {
                 method: 'POST',
                 body: formData,
                 agentOptions: {
-                    pfx: fs.readFileSync(__dirname + './../cert/apiclient_cert.p12'),
+                    pfx: fs.readFileSync(__dirname + '/cert/apiclient_cert.p12'),
                     passphrase: _order.mch_id
                 }
             }, function (err, response, body) {

@@ -20,6 +20,11 @@ router.post('/get', async (ctx, next) => {
     let result = await bll.getList(ctx)
     ctx.body = result;
 })
+router.post('/get/id', async (ctx, next) => {
+    let result = await bll.getById(ctx)
+    ctx.body = result;
+})
+
 
 
 module.exports = router
