@@ -39,21 +39,73 @@ const roles = {
   },
 
   async updateState(ctx) {
+
     let form = ctx.request.body;
     let result = retCode.Success;
-    let bkdata = await model.updateState(form);
-    if (bkdata.errno) {
-      if (bkdata.errno == 1062) {
+    //取消订单
+    if (form.state == 4) {
+      let can = await model.getById(form.id)
+      if (can.errno) {
         result = retCode.Fail;
-        result.msg = "失败";
+        result.msg = "查询失败";
       } else {
-        result = retCode.ServerError;
-        result.msg = "服务端错误";
+        if (can.length == 1) {
+          if (can[0].is_pay == 1 && can[0].state == 1) {
+            const wxpay = require('./wxpay')
+            let moo = await wxpay.refund(can[0])
+            if (moo.return_code == 'SUCCESS') {
+              let up = await model.updateRedundNo({
+                out_refund_no: moo.out_refund_no,
+                id: form.id,
+              })
+              if (up.errno) {
+                console.log(up)
+              } else {
+                result = retCode.Success;
+                result.msg = "取消成功";
+                result.data = moo.return_msg
+              }
+            } else {
+              result = retCode.Fail;
+              result.msg = "取消失败";
+              result.data = moo.return_msg
+            }
+          }
+          let bkdata = await model.updateState2(form);
+          if (bkdata.errno) {
+            if (bkdata.errno == 1062) {
+              result = retCode.Fail;
+              result.msg = "失败";
+            } else {
+              result = retCode.ServerError;
+              result.msg = "服务端错误";
+            }
+          } else {
+            result.data = bkdata.insertId;
+            result.msg = "修改成功";
+          }
+
+        } else {
+          result = retCode.Fail;
+          result.msg = "没有该订单";
+        }
       }
-    } else {
-      result.data = bkdata.insertId;
-      result.msg = "修改成功";
+    } else if (form.state == 1) {
+      let bkdata = await model.updateState(form);
+      if (bkdata.errno) {
+        if (bkdata.errno == 1062) {
+          result = retCode.Fail;
+          result.msg = "失败";
+        } else {
+          result = retCode.ServerError;
+          result.msg = "服务端错误";
+        }
+      } else {
+        result.data = bkdata.insertId;
+        result.msg = "修改成功";
+      }
     }
+
     return com.filterReturn(result);
   },
   async updateConfirm(ctx) {
@@ -87,16 +139,15 @@ const roles = {
         result.msg = "服务端错误";
       }
     } else {
-      token.msgModel(form.openid,'8STlOtBZ4TrivsA8uD_5_SIGjYzWJve29Jm4wd3Q2Sk',
-        form.form_id,'/pages/order/detail/detail?id='+form.id,
-        {
+      token.msgModel(form.openid, '8STlOtBZ4TrivsA8uD_5_SIGjYzWJve29Jm4wd3Q2Sk',
+        form.form_id, '/pages/order/detail/detail?id=' + form.id, {
           "keyword1": {
             "value": form.order_num
           },
           "keyword2": {
             "value": form.title
           }
-        },'')
+        }, '')
       result.data = bkdata.changedRows;
       result.msg = "修改成功";
     }

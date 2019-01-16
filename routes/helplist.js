@@ -12,6 +12,7 @@ router.post('/pay', async (ctx, next) => {
     let result = await wxpay.wxpay(ctx, 'update')
     ctx.body = result;
 })
+
 router.post('/jd', async (ctx, next) => {
     let result = await bll.updateJd(ctx)
     ctx.body = result;

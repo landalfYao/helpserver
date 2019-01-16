@@ -4,6 +4,7 @@ const com = require("../utils/common");
 const config = require('../config/config');
 const cryptoMO = require("crypto"); // MD5算法
 const parseString = require("xml2js").parseString; // xml转js对象
+const refund = require('./wxrefund')
 const key = config.Mch_key;
 const wxpay = {
     async wxpay(ctx, type) {
@@ -176,6 +177,45 @@ const wxpay = {
         }
         str = str.substr(1);
         return str;
+    },
+    //退款
+    async refund(param) {
+        var RefundInfo = {
+            mch_id: config.Mch_id, //商户号
+            out_refund_no: this.guid(), //商户退款单号 //商户系统内部的退款单号（自己生成）
+            out_trade_no: param.order_num, //商户系统内部订单号
+            refund_fee: param.total_fee, //退款金额
+            total_fee: param.total_fee, //订单金额
+            nonce_str: await this.getNonceStr(32)
+        };
+        // 参数成功回调
+        var result = await refund.WxPayRefund(RefundInfo);
+        result.out_refund_no = RefundInfo.out_refund_no
+        return result;
+    },
+    S4() {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    },
+
+    guid() {
+        return (this.S4() + this.S4() + this.S4() + this.S4() + this.S4() + this.S4() + this.S4() + this.S4());
+    },
+    paysignjsapi: function (appid, mch_id, nonce_str, out_refund_no, out_trade_no, refund_fee, total_fee) {
+        var ret = {
+            appid: appid,
+            mch_id: mch_id,
+            nonce_str: nonce_str,
+            // notify_url: notify_url,
+            out_refund_no: out_refund_no,
+            out_trade_no: out_trade_no,
+            refund_fee: refund_fee,
+            total_fee: total_fee,
+        };
+        var string = this.raw(ret);
+        string = string + '&key=' + key; //key为在微信商户平台(pay.weixin.qq.com)-->账户设置-->API安全-->密钥设置 
+        var crypto = require('crypto');
+        var sign = crypto.createHash('md5').update(string, 'utf8').digest('hex');
+        return sign.toUpperCase();
     },
 }
 module.exports = wxpay

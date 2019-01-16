@@ -14,6 +14,18 @@ const roles = {
         let result = await db.query(sql, params)
         return result
     },
+    async updateState2(args) {
+        let sql = 'UPDATE helplist set state=? where id = ?'
+        let params = [args.state, args.id]
+        let result = await db.query(sql, params)
+        return result
+    },
+    async updateRedundNo(args) {
+        let sql = 'UPDATE helplist set out_refund_no=? where id = ?'
+        let params = [args.out_refund_no, args.id]
+        let result = await db.query(sql, params)
+        return result
+    },
     async jd(args) {
         let sql = 'update helplist set state = 2,jd_id=? where id = ?'
         let params = [args.jd_id, args.id]
@@ -29,6 +41,12 @@ const roles = {
     async updateOrderNum(oid, id) {
         let sql = 'UPDATE helplist set order_num=? where id = ?'
         let params = [oid, id]
+        let result = await db.query(sql, params)
+        return result
+    },
+    async getById(id) {
+        let sql = 'select * from helplist where id = ?'
+        let params = [id]
         let result = await db.query(sql, params)
         return result
     },
