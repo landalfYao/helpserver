@@ -7,5 +7,9 @@ router.post('/get', async (ctx, next) => {
     let result = await bll.getAnalysisData(ctx)
     ctx.body = result;
 })
+router.post('/get/agent', async (ctx, next) => {
+    let result = await bll.getAnalysisDataByAgent(ctx)
+    ctx.body = result;
+})
 
 module.exports = router
