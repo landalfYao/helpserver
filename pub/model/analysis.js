@@ -21,9 +21,7 @@ const app = {
     let result = await db.query(sql, []);
     return result;
   },
-  async getUserData(jd_id) {
-    let sql = "";
-  },
+
   async getAgentData(a_id) {
     let waid = "where  a_id=?";
     let naid = a_id ? "and a_id=?" : "";

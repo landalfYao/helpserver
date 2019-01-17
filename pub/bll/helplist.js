@@ -4,21 +4,7 @@ const com = require("../utils/common");
 const db = require("./../db/mysqlHelper.js");
 const token = require('../config/wxtoken')
 const roles = {
-  /**
-   * @api {post} /api/help/add 添加帮助
-   * @apiDescription 添加帮助
-   * @apiName Add
-   * @apiGroup help
-   * @apiParam {string} wx_id 用户ID
-   * @apiParam {string} des 描述
-   * @apiParam {string} lnglat 经纬度
-   * @apiParam {string} address  地址
-   * @apiParam {string} phone  手机号
-   * @apiParam {string} pubarea  发布地区
-   * @apiVersion 1.0.0
-   * @apiSampleRequest http://localhost:3000/api/help/add
-   * @apiVersion 1.0.0
-   */
+
   async add(ctx) {
     let form = ctx.request.body;
     let result = retCode.Success;
@@ -42,56 +28,65 @@ const roles = {
 
     let form = ctx.request.body;
     let result = retCode.Success;
+    let ordata = (await model.getById(form.id))[0]
+
     //取消订单
     if (form.state == 4) {
-      let can = await model.getById(form.id)
-      if (can.errno) {
-        result = retCode.Fail;
-        result.msg = "查询失败";
-      } else {
-        if (can.length == 1) {
-          if (can[0].is_pay == 1 && can[0].state == 1) {
-            const wxpay = require('./wxpay')
-            let moo = await wxpay.refund(can[0])
-            if (moo.return_code == 'SUCCESS') {
-              let up = await model.updateRedundNo({
-                out_refund_no: moo.out_refund_no,
-                id: form.id,
-              })
-              if (up.errno) {
-                console.log(up)
+      if (ordata.state == 1 || ordata.state == 0) {
+
+        let can = await model.getById(form.id)
+        if (can.errno) {
+          result = retCode.Fail;
+          result.msg = "查询失败";
+        } else {
+          if (can.length == 1) {
+            if (can[0].is_pay == 1 && can[0].state == 1) {
+              const wxpay = require('./wxpay')
+              let moo = await wxpay.refund(can[0])
+              if (moo.return_code == 'SUCCESS') {
+                let up = await model.updateRedundNo({
+                  out_refund_no: moo.out_refund_no,
+                  id: form.id,
+                })
+                if (up.errno) {
+                  console.log(up)
+                } else {
+                  result = retCode.Success;
+                  result.msg = "取消成功";
+                  result.data = moo.return_msg
+                }
               } else {
-                result = retCode.Success;
-                result.msg = "取消成功";
+                result = retCode.Fail;
+                result.msg = "取消失败";
                 result.data = moo.return_msg
               }
-            } else {
-              result = retCode.Fail;
-              result.msg = "取消失败";
-              result.data = moo.return_msg
             }
-          }
-          let bkdata = await model.updateState2(form);
-          if (bkdata.errno) {
-            if (bkdata.errno == 1062) {
-              result = retCode.Fail;
-              result.msg = "失败";
+            let bkdata = await model.updatCancel(form);
+            if (bkdata.errno) {
+              if (bkdata.errno == 1062) {
+                result = retCode.Fail;
+                result.msg = "失败";
+              } else {
+                result = retCode.ServerError;
+                result.msg = "服务端错误";
+              }
             } else {
-              result = retCode.ServerError;
-              result.msg = "服务端错误";
+              result.data = bkdata.insertId;
+              result.msg = "修改成功";
             }
-          } else {
-            result.data = bkdata.insertId;
-            result.msg = "修改成功";
-          }
 
-        } else {
-          result = retCode.Fail;
-          result.msg = "没有该订单";
+          } else {
+            result = retCode.Fail;
+            result.msg = "没有该订单";
+          }
         }
+      } else {
+        result = retCode.Fail
+        result.msg = '订单已无法取消，请查看是否已被接单'
       }
+
     } else if (form.state == 1) {
-      let bkdata = await model.updateState(form);
+      let bkdata = await model.updatePayed(form);
       if (bkdata.errno) {
         if (bkdata.errno == 1062) {
           result = retCode.Fail;
