@@ -14,7 +14,7 @@ const roles = {
         let result = await db.query(sql, params)
         return result
     },
-    async updatePayed(args){
+    async updatePayed(args) {
         let sql = 'UPDATE helplist set state=1,pay_time=now(),is_pay=1 where id = ?'
         let params = [args.id]
         let result = await db.query(sql, params)
@@ -66,7 +66,16 @@ const roles = {
         let result = await db.commonSelect(args)
         return result
     },
-
+    async getUserByAid(id) {
+        let sql = 'select * from y_user where a_id = ?'
+        let result = await db.query(sql, [id])
+        return result
+    },
+    async getServerByDlIdAndServerName(id, server_name) {
+        let sql = 'select * from dl_server where dl_id = ? and server_name=?'
+        let result = await db.query(sql, [id, server_name])
+        return result
+    }
 }
 
 module.exports = roles

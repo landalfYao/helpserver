@@ -1,6 +1,7 @@
 const router = require('koa-router')()
 const bll = require('./../pub/bll/helplist.js')
 const wxpay = require('./../pub/bll/wxpay')
+const compl = require('./../pub/bll/orderComplete')
 
 router.prefix('/api/help')
 
@@ -22,7 +23,7 @@ router.post('/update', async (ctx, next) => {
     ctx.body = result;
 })
 router.post('/confirm', async (ctx, next) => {
-    let result = await bll.updateConfirm(ctx)
+    let result = await compl.complete(ctx)
     ctx.body = result;
 })
 router.post('/update/state', async (ctx, next) => {

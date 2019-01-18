@@ -186,18 +186,7 @@ const roles = {
     }
     return com.filterReturn(result);
   },
-  /**
-   * @api {post} /api/area/del 地区删除
-   * @apiDescription 地区删除
-   * @apiName del
-   * @apiGroup area
-   * @apiHeader {string} token token
-   * @apiHeader {string} uid 用户ID
-   * @apiParam {int} ids  pkId
-   * @apiVersion 1.0.0
-   * @apiSampleRequest http://localhost:3000/api/area/del
-   * @apiVersion 1.0.0
-   */
+  //删除
   async del(ctx) {
     let form = ctx.request.body;
     let result = retCode.Success;
@@ -216,22 +205,7 @@ const roles = {
     }
     return com.filterReturn(result);
   },
-  /**
-   * @api {post} /api/help/get 查询
-   * @apiDescription 查询
-   * @apiName Get
-   * @apiGroup help
-   * @apiHeader {string} token token
-   * @apiHeader {string} uid 用户ID
-   * @apiParam {string} fields 查询字段 例('name,id') 传空代表查询所有
-   * @apiParam {string} wheres 查询条件 例('name=0 and id=3')
-   * @apiParam {string} sorts  查询排序 例('name desc, id asc')
-   * @apiParam {int} pageIndex  页码
-   * @apiParam {int} pageSize  每页条数
-   * @apiVersion 1.0.0
-   * @apiSampleRequest http://localhost:3000/api/area/get
-   * @apiVersion 1.0.0
-   */
+  //查询
   async getList(ctx) {
     ctx.request.body.fields = "helplist.*,wxuser.avatar_url,wxuser.nick_name "
     ctx.request.body.tables = "helplist,wxuser";
