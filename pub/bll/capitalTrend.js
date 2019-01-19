@@ -22,7 +22,6 @@ const app = {
         } else {
             return com.filterReturn(auth)
         }
-
     },
 
 }

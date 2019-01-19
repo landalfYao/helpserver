@@ -21,6 +21,21 @@ const app = {
     let result = await db.query(sql, []);
     return result;
   },
+  async getWxuserData(jd_id){
+    let jdorder = 'select count(*) total,state from helplist where jd_id = ?  GROUP BY state'
+    let jdorderDaily = 'select count(*) total,state from helplist where  jd_id = ? and DATE_FORMAT( create_time, " % Y % m " ) = DATE_FORMAT(  CURDATE( ) ," % Y % m " )  GROUP BY state '
+    let orderType =
+      "select count(*) total,title from helplist where state=3 and jd_id=?  GROUP BY title";
+    let orderTypeMonth =
+      'select count(*) total,title from helplist where state=3 and jd_id=? and DATE_FORMAT( create_time, " % Y % m " ) = DATE_FORMAT(  CURDATE( ) ," % Y % m " )  GROUP BY title'
+    let data = {
+      jdorder: await db.query(jdorder, [jd_id]),
+      jdorderDaily: await db.query(jdorderDaily, [jd_id]),
+      orderType: await db.query(orderType, [jd_id]),
+      orderTypeMonth: await db.query(orderTypeMonth, [jd_id]),
+    }
+    return data
+  },
 
   async getAgentData(a_id) {
     let waid = "where  a_id=?";

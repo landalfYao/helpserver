@@ -19,6 +19,13 @@ let app = {
         let data = await model.getAgentData(form.a_id)
         result.data = data
         return result
+    },
+    async getWxuserData(ctx){
+        let result = retCode.Success
+        let form = ctx.request.body
+        let data = await model.getWxuserData(form.jd_id)
+        result.data = data
+        return result
     }
 
 }

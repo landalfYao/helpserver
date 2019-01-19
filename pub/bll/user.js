@@ -7,30 +7,7 @@ const uPattern = /^[a-zA-Z0-9_-]{4,16}$/
 const pPattern = /[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/
 const mPattern = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[7|8])|(18[0,5-9]))\d{8}$/;
 const user = {
-    /**
-     * @api {post} /api/user/state/disable 禁用用户
-     * @apiDescription 禁用用户
-     * @apiName disable
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} ids 用户ID
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/state/disable
-     * @apiVersion 1.0.0
-     */
-    /**
-     * @api {post} /api/user/state/available 启用用户
-     * @apiDescription 启用用户
-     * @apiName available
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} ids 用户ID
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/state/available
-     * @apiVersion 1.0.0
-     */
+    //禁用用户
     async disableUser(ctx, state) {
         let form = ctx.request.body
         let result = retCode.Success
@@ -78,17 +55,6 @@ const user = {
 
     /**
      * @api {post} /api/user/update/pwd 修改密码
-     * @apiDescription 修改密码
-     * @apiName updatePwd
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} oldPwd 旧密码
-     * @apiParam {string} newPwd 新密码
-     * @apiParam {string} confirmPwd 确认密码
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/update/pwd
-     * @apiVersion 1.0.0
      */
     async updatePwd(ctx) {
         let form = ctx.request.body
@@ -167,16 +133,6 @@ const user = {
 
     /**
      * @api {post} /api/user/update 更新用户个人信息
-     * @apiDescription 更新用户个人信息
-     * @apiName update
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} nickName 昵称
-     * @apiParam {string} avatarUrl 头像
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/update
-     * @apiVersion 1.0.0
      */
     async updateUserInfo(ctx) {
         let form = ctx.request.body
@@ -212,19 +168,6 @@ const user = {
 
     /**
      * @api {post} /api/user/get 用户查询
-     * @apiDescription 用户查询
-     * @apiName Get
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiParam {string} fields 查询字段 例('name,id') 传空代表查询所有
-     * @apiParam {string} wheres 查询条件 例('name=0 and id=3')
-     * @apiParam {string} sorts  查询排序 例('name desc, id asc')
-     * @apiParam {int} pageIndex  页码
-     * @apiParam {int} pageSize  每页条数
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/get
-     * @apiVersion 1.0.0
      */
     async getList(ctx) {
         ctx.request.body.tables = 'y_user left join area on y_user.a_id = area.pk_id '
@@ -252,14 +195,6 @@ const user = {
     },
     /**
      * @api {get} /api/user/info 查询用户信息(个人)
-     * @apiDescription 查询用户信息(个人)
-     * @apiName info
-     * @apiGroup User
-     * @apiHeader {string} token token
-     * @apiHeader {string} uid 用户ID
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/info
-     * @apiVersion 1.0.0
      */
     async getUserInfo(ctx) {
         let result = retCode.Success
@@ -280,10 +215,9 @@ const user = {
             return com.filterReturn(auth)
         }
     },
+
     async getInfoByArea(ctx) {
         let result = retCode.Success
-
-
         let bkdata = await usermodel.getInfoByArea(ctx.request.body.aid)
         if (bkdata.errno) {
             result = retCode.ServerError
@@ -305,18 +239,6 @@ const user = {
     },
     /**
      * @api {post} /api/user/register 用户注册
-     * @apiDescription 用户注册
-     * @apiName Register
-     * @apiGroup User
-     * @apiParam {string} username 用户名 4到16位，只能输入字母、数字、下划线、减号
-     * @apiParam {string} password 密码 8位以上密码，必须包含字母和数字
-     * @apiParam {string} checkPwd 确认密码
-     * @apiParam {int} dtype 用户类型
-     * @apiParam {string} dcity 区域
-     * @apiParam {string} phone
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/register
-     * @apiVersion 1.0.0
      */
     async register(ctx) {
         let form = ctx.request.body
@@ -389,14 +311,6 @@ const user = {
 
     /**
      * @api {post} /api/user/login 用户登录
-     * @apiDescription 用户登录
-     * @apiName Login
-     * @apiGroup User
-     * @apiParam {string} username 用户名 4到16位，只能输入字母、数字、下划线、减号
-     * @apiParam {string} password 密码 8位以上密码，必须包含字母和数字
-     * @apiVersion 1.0.0  
-     * @apiSampleRequest http://localhost:3000/api/user/login
-     * @apiVersion 1.0.0
      */
     async login(ctx) {
         let form = ctx.request.body
@@ -441,7 +355,10 @@ const user = {
                                 result.msg = '账户不可用,请联系管理'
                             } else {
                                 const userToken = {
-                                    pk_id: res[0].pk_id
+                                    pk_id: res[0].pk_id,
+                                    a_id: res[0].a_id,
+                                    dtype: res[0].dtype,
+                                    phone:res[0].phone
                                 }
                                 //生成token
                                 const token = await com.jwtFun.sign(userToken)

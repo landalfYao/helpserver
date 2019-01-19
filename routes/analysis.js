@@ -11,5 +11,9 @@ router.post('/get/agent', async (ctx, next) => {
     let result = await bll.getAnalysisDataByAgent(ctx)
     ctx.body = result;
 })
+router.post('/get/wx', async (ctx, next) => {
+    let result = await bll.getWxuserData(ctx)
+    ctx.body = result;
+})
 
 module.exports = router
