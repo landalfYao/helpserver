@@ -1,45 +1,49 @@
 const db = require('./../db/mysqlHelper.js')
 
 const authorityCategory = {
-    async add ( args ){
-        let sql = 'INSERT INTO y_authority_category (cate_name,remarks,sort,is_show) value(?,?,?,?)'
-        let params = [args.cateName, args.remarks, args.sort, args.isShow]
+    async add(args) {
+        let sql = 'INSERT INTO auth_cate (cate_name,remarks,sort,is_show) value(?,?,?,?)'
+        let params = [args.cate_name, args.remarks, args.sort, args.is_show]
         let result = await db.query(sql, params)
         return result
     },
-    async update ( args ){
-        let sql = 'UPDATE y_authority_category set cate_name=?,remarks=?,sort=?,is_show=? where pk_id = ?'
-        let params = [args.cateName,args.remarks,args.sort,args.isShow,args.uid]
-        let result = await db.query(sql,params)
+    async update(args) {
+        let sql = 'UPDATE auth_cate set cate_name=?,remarks=?,sort=?,is_show=? where id = ?'
+        let params = [args.cate_name, args.remarks, args.sort, args.is_show, args.id]
+        let result = await db.query(sql, params)
         return result
     },
-    async updateSort ( args ){
-        let sql = 'UPDATE y_authority_category set sort=? where pk_id = ?'
-        let params = [args.sort,args.uid]
-        let result = await db.query(sql,params)
+    async updateSort(args) {
+        let sql = 'UPDATE auth_cate set sort=? where id = ?'
+        let params = [args.sort, args.id]
+        let result = await db.query(sql, params)
         return result
     },
-    async updateShow ( args ){
-        let sql = 'UPDATE y_authority_category set is_show=? where pk_id in ('+args.ids+')'
-        let params = [args.isShow]
-        let result = await db.query(sql,params)
+    async updateShow(args) {
+        let sql = 'UPDATE auth_cate set is_show=? where id in (' + args.ids + ')'
+        let params = [args.is_show]
+        let result = await db.query(sql, params)
         return result
     },
-    async updateDel ( ids ){
-        let sql = 'UPDATE y_authority_category set is_delete=1 where pk_id in ('+ids+')'
-        let result = await db.query(sql,[])
+    async updateDel(ids) {
+        let sql = 'UPDATE auth_cate set is_delete=1 where id in (' + ids + ')'
+        let result = await db.query(sql, [])
         return result
     },
-    async findCate (  ) { 
-        let sql = 'SELECT * FROM y_authority_category WHERE is_delete=0'
-        let result = await db.query(sql,[])
+    async findCate() {
+        let sql = 'SELECT * FROM auth_cate WHERE is_delete=0'
+        let result = await db.query(sql, [])
         return result
     },
-    async findAuth (  ) { 
+    async findAuth() {
         let sql = 'SELECT * FROM y_authority WHERE is_delete=0'
-        let result = await db.query(sql,[])
+        let result = await db.query(sql, [])
         return result
-    }
+    },
+    async getList(args) {
+        let result = await db.commonSelect(args)
+        return result
+    },
 }
 
 module.exports = authorityCategory

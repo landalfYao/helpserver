@@ -44,5 +44,9 @@ router.post('/state/available', async (ctx, next) => {
   let result = await userBll.disableUser(ctx, 'AVAILABLE')
   ctx.body = result;
 })
+router.post('/log/get', async (ctx, next) => {
+  let result = await userBll.getLog(ctx)
+  ctx.body = result;
+})
 
 module.exports = router

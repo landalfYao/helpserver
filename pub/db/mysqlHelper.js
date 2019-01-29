@@ -90,16 +90,14 @@ const db = {
             }
         }
     },
-    async setLog(args) {
-        let {
-            uid,
-            ped_operation,
-            operation_code,
-            operation_msg,
-            api_url
-        } = args
-        let sql = 'INSERT INTO y_logs (uid,ped_operation,operation_code,operation_msg,api_url) values(?,?,?,?,?)'
-        let result = await this.query(sql, [uid, ped_operation, operation_code, operation_msg, api_url])
+    async setLog(uid,
+        op_code,
+        fi_table,
+        table_id,
+        des,
+        api_url) {
+        let sql = 'INSERT INTO y_logs (uid,op_code,fi_table,table_id,des,api_url) values(?,?,?,?,?,?)'
+        let result = await this.query(sql, [uid, op_code, fi_table, table_id, des, api_url])
         return result
     }
 }

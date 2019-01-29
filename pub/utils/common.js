@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 // const jwtKoa = require('koa-jwt')
 const secretKey = 'adfbrw32rfr23'
 const retCode = require('./../utils/retcode.js')
-// const config = require('./../config/config')
+const config = require('./../config/config')
 const db = require('./../db/mysqlHelper')
 const request = require("request");
 let loginState = {
@@ -159,7 +159,7 @@ var jwtFun = {
     async checkRoleAuth(api, id) {
         let apiUrl = api
         if (id) {
-            let sql = 'Select y_authority.api_url from y_role_auth_grant,y_authority where ' +
+            let sql = 'Select auths.api_url from y_role_auth_grant,y_authority where ' +
                 'y_role_auth_grant.role_id=' + id + ' and y_authority.api_url = "' + apiUrl + '"'
             let bkdata = await db.query(sql, [])
             if (bkdata.length > 0) {
@@ -174,20 +174,20 @@ var jwtFun = {
     },
     //校验权限
     async checkAuth(ctx) {
-        // let user = await this.checkToken(ctx)
+        let user = await this.checkToken(ctx)
         let result = retCode.Success
-        // if(user.pl){
-        //判断是否有权限
-        //     if(user.payload.pk_id == config.SUPER_ADMINISTRATOR){
-        //         result.auth = true
-        //         result.uid = user.payload.pk_id
-        //     }else{
-        //         result = retCode.NoAuthority
-        //         result.msg = '您无权操作'
-        //     }
-        // }else{
-        //     result = user
-        // }
+        if (user.pl) {
+            //判断是否有权限
+            if (user.payload.pk_id == config.SUPER_ADMINISTRATOR) {
+                result.auth = true
+                result.uid = user.payload.pk_id
+            } else {
+                result = retCode.NoAuthority
+                result.msg = '您无权操作'
+            }
+        } else {
+            result = user
+        }
         return result
     }
 }

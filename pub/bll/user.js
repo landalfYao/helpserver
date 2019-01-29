@@ -193,6 +193,31 @@ const user = {
         }
 
     },
+    async getLog(ctx) {
+        ctx.request.body.tables = 'y_logs'
+        let auth = await com.jwtFun.checkAuth(ctx)
+        let result = retCode.Success
+        if (auth.auth) {
+            result = await com.commonSelect.getList(ctx)
+            if (result.args) {
+                let userResult = await usermodel.getList(result.args, result.ct)
+                let bkdata = result.result
+                bkdata.data = userResult
+
+                let re = retCode.Success
+                re.data = userResult
+                re.msg = '查询成功'
+                result = re
+
+            }
+        } else {
+            result = auth
+        }
+        if (auth.uid) {
+            db.setLog(auth.uid, result.code, 'y_logs', '', '用户日志查询 ' + result.msg, '/api/user/log/get')
+        }
+        return com.filterReturn(result)
+    },
     /**
      * @api {get} /api/user/info 查询用户信息(个人)
      */
@@ -358,7 +383,7 @@ const user = {
                                     pk_id: res[0].pk_id,
                                     a_id: res[0].a_id,
                                     dtype: res[0].dtype,
-                                    phone:res[0].phone
+                                    phone: res[0].phone
                                 }
                                 //生成token
                                 const token = await com.jwtFun.sign(userToken)
