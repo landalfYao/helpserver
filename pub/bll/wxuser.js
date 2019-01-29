@@ -238,10 +238,9 @@ const roles = {
         if (auth.code == 1) {
             let result = await com.commonSelect.getList(ctx)
             if (result.args) {
-                let userResult = await model.getList(result.args, result.ct)
+                let userResult = await model.getList(result.args)
                 let bkdata = result.result
                 bkdata.data = userResult
-                let ct = result.ct.payload
 
                 let re = retCode.Success
                 re.data = userResult

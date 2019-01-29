@@ -146,7 +146,7 @@ var jwtFun = {
                             return result
                         }
                     } else {
-                        let result = result = {
+                        let result = {
                             code:retCode.NoAuthority.code,
                             codeMsg:retCode.NoAuthority.codeMsg
                         };
