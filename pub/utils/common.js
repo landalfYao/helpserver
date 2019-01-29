@@ -1,9 +1,10 @@
+"use strict"; 
 const crypto = require('crypto');
 const _algorithm = 'aes-256-cbc';
 const _iv = '73546548679573675465765897096532';
 const ivBuffer = new Buffer(_iv, 'hex');
 const ivkey = Buffer.from('15464336451324535212156486623224', 'utf8').toString('hex');
-var secrets = {};
+let secrets = {};
 const jwt = require('jsonwebtoken')
 // const jwtKoa = require('koa-jwt')
 const secretKey = 'adfbrw32rfr23'
@@ -115,12 +116,15 @@ var jwtFun = {
         
         let token = ctx.header.token
         let uid = ctx.header.uid
-        let payload = null
+        
         if (loginState.get('y' + uid) == 1) {
             if (token) {
-                payload = await this.verify(token)
+                let payload = await this.verify(token)
                 if (payload == undefined || payload == -1 || payload == '') {
-                    let result = retCode.SessionExpired
+                    let result = {
+                        code:retCode.SessionExpired.code,
+                        codeMsg:retCode.SessionExpired.codeMsg
+                    };
                     result.msg = 'token 错误'
                     return result
                 } else {
@@ -134,17 +138,23 @@ var jwtFun = {
                                 payload: payload
                             }
                         } else {
-                            let result = retCode.SessionExpired
+                            let result = result = {
+                                code:retCode.SessionExpired.code,
+                                codeMsg:retCode.SessionExpired.codeMsg
+                            };
                             result.msg = 'token 校验未通过'
                             return result
                         }
                     } else {
-                        let result = retCode.NoAuthority
+                        let result = result = {
+                            code:retCode.NoAuthority.code,
+                            codeMsg:retCode.NoAuthority.codeMsg
+                        };
                         result.msg = '对不起，您无权操作'
                         return result
                     }
-
                 }
+
             } else {
                 let result = retCode.SessionExpired
                 result.msg = 'token 错误'
@@ -178,17 +188,15 @@ var jwtFun = {
     //校验权限
     async checkAuth(ctx) {
         let user = await this.checkToken(ctx)
-        let result = retCode.Success
+        let result = {
+            code:retCode.Success.code,
+            codeMsg:retCode.Success.codeMsg
+        }
         if (user.pl == 1) {
             //判断是否有权限
-            if (user.payload.pk_id == ctx.header.uid) {
-                result.auth = true
-                result.uid = user.payload.pk_id
-                result.payload = user.payload
-            } else {
-                result = retCode.NoAuthority
-                result.msg = '您无权操作'
-            }
+            result.auth = true
+            result.uid = ctx.header.uid
+            result.payload = user.payload
         } else {
             result = user
         }
@@ -229,6 +237,7 @@ function filterReturn(result) {
     delete result.uid
     delete result.auth
     delete result.token
+    delete result.payload
     return result
 }
 let http = {

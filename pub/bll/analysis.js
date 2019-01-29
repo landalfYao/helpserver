@@ -1,5 +1,6 @@
-const config = require('./../config/config')
-const fs = require('fs')
+"use strict";  
+// const config = require('./../config/config')
+// const fs = require('fs')
 const model = require('./../model/analysis')
 const com = require('../utils/common')
 const retCode = require('../utils/retcode')
@@ -21,10 +22,11 @@ let app = {
         return com.filterReturn(result)
     },
     async getAnalysisDataByAgent(ctx) {
+        let form = ctx.request.body  
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)
-        if(auth.code == 1){
-            let data = await model.getAgentData(auth.payload.a_id)
+        if(auth.uid){
+            let data = await model.getAgentData(auth.payload.a_id || form.a_id)
             result.data = data
         }else{
             result = auth
