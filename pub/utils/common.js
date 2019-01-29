@@ -112,6 +112,7 @@ var jwtFun = {
     },
     //token uid 校验
     async checkToken(ctx) {
+        
         let token = ctx.header.token
         let uid = ctx.header.uid
         let payload = null
@@ -123,8 +124,10 @@ var jwtFun = {
                     result.msg = 'token 错误'
                     return result
                 } else {
-                    let isroleAuth = true
-                    if (isroleAuth || uid == 1) {
+                    let isroleAuth = await this.checkRoleAuth(ctx.request.url,payload.role_id)
+              
+                    if (isroleAuth || uid == config.SUPER_ADMINISTRATOR) {
+                       
                         if (payload.pk_id == uid) {
                             return {
                                 pl: 1,
@@ -159,8 +162,8 @@ var jwtFun = {
     async checkRoleAuth(api, id) {
         let apiUrl = api
         if (id) {
-            let sql = 'Select auths.api_url from y_role_auth_grant,y_authority where ' +
-                'y_role_auth_grant.role_id=' + id + ' and y_authority.api_url = "' + apiUrl + '"'
+            let sql = 'Select auths.auth_url from role_auth,auths where role_auth.auth_id=auths.id and ' +
+                'role_auth.role_id=' + id + ' and auths.auth_url = "' + apiUrl + '"'
             let bkdata = await db.query(sql, [])
             if (bkdata.length > 0) {
                 return true
@@ -176,11 +179,12 @@ var jwtFun = {
     async checkAuth(ctx) {
         let user = await this.checkToken(ctx)
         let result = retCode.Success
-        if (user.pl) {
+        if (user.pl == 1) {
             //判断是否有权限
-            if (user.payload.pk_id == config.SUPER_ADMINISTRATOR) {
+            if (user.payload.pk_id == ctx.header.uid) {
                 result.auth = true
                 result.uid = user.payload.pk_id
+                result.payload = user.payload
             } else {
                 result = retCode.NoAuthority
                 result.msg = '您无权操作'

@@ -383,7 +383,8 @@ const user = {
                                     pk_id: res[0].pk_id,
                                     a_id: res[0].a_id,
                                     dtype: res[0].dtype,
-                                    phone: res[0].phone
+                                    phone: res[0].phone,
+                                    role_id:res[0].role_id
                                 }
                                 //生成token
                                 const token = await com.jwtFun.sign(userToken)

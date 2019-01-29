@@ -20,9 +20,8 @@ const app = {
                 }
                 result.data = 0
             } else {
-                console.log(bkdata)
-                result.data = bkdata.insertId
-                result.msg = '添加成功'
+                result.data = bkdata.affectedRows
+                result.msg = '添加成功了'+bkdata.affectedRows+'条数据'
             }
 
         } else {
@@ -48,9 +47,8 @@ const app = {
                 result = retCode.ServerError
                 result.msg = '服务端错误'
             } else {
-                console.log(bkdata)
-                result.data = bkdata.changedRows
-                result.msg = '成功删除了' + bkdata.changedRows + '条数据'
+                result.data = bkdata.affectedRows
+                result.msg = '成功删除了' + bkdata.affectedRows + '条数据'
             }
 
         } else {
