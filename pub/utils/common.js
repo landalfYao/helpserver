@@ -1,10 +1,6 @@
 "use strict"; 
 const crypto = require('crypto');
-const _algorithm = 'aes-256-cbc';
-const _iv = '73546548679573675465765897096532';
-const ivBuffer = new Buffer(_iv, 'hex');
-const ivkey = Buffer.from('15464336451324535212156486623224', 'utf8').toString('hex');
-let secrets = {};
+
 const jwt = require('jsonwebtoken')
 // const jwtKoa = require('koa-jwt')
 const secretKey = 'adfbrw32rfr23'
@@ -12,6 +8,7 @@ const retCode = require('./../utils/retcode.js')
 const config = require('./../config/config')
 const db = require('./../db/mysqlHelper')
 const request = require("request");
+const secret = require("./secret.js")
 let loginState = {
     data: {},
     set(key, value) {
@@ -25,75 +22,6 @@ let loginState = {
     }
 }
 
-/**
- * @desc: 加密
- * @param: data: 待加密的内容； dataEncoding: 内容编码; key: 秘钥； 
- *         keyEncoding: 秘钥编码； padding: 自动填充加密向量
- */
-secrets.encrypt = function (data, dataEncoding, key, keyEncoding, padding) {
-    let keyBuf = null;
-
-    if (key instanceof Buffer) {
-        keyBuf = key;
-    } else {
-        keyBuf = new Buffer(key, keyEncoding);
-    }
-
-    let dataBuf = null;
-    if (data instanceof Buffer) {
-        dataBuf = data;
-    } else {
-        dataBuf = new Buffer(data, dataEncoding);
-    }
-
-    let cipher = crypto.createCipheriv(_algorithm, keyBuf, ivBuffer);
-    cipher.setAutoPadding(padding);
-    let cipherData = cipher.update(dataBuf, 'buffer', 'base64');
-    cipherData += cipher.final('base64');
-
-    return cipherData;
-};
-
-/**
- * @desc:  解密
- * @param: data: 待解密的内容； dataEncoding: 内容编码; key: 秘钥； 
- *         keyEncoding: 秘钥编码； padding: 自动填充加密向量
- */
-secrets.decypt = function (data, dataEncoding, key, keyEncoding, padding) {
-
-    let keyBuf = null;
-    if (key instanceof Buffer) {
-        keyBuf = key;
-    } else {
-        keyBuf = new Buffer(key, keyEncoding);
-    }
-
-    let dataBuf = null;
-    if (data instanceof Buffer) {
-        dataBuf = data;
-    } else {
-        dataBuf = new Buffer(data, dataEncoding);
-    }
-
-    var decipher = crypto.createDecipheriv(_algorithm, keyBuf, ivBuffer);
-    decipher.setAutoPadding(padding);
-    var decipherData = decipher.update(dataBuf, 'binary', 'binary');
-    decipherData += decipher.final('binary');
-    var str3 = Buffer.from(decipherData, 'binary');
-
-    return str3.toString('utf8');
-};
-//md5加密
-function md5(data) {
-    let md5 = crypto.createHash('md5');
-    md5.update(data);
-    let sign = md5.digest('hex');
-    return sign
-}
-//MD5解密
-function md5d(data) {
-    return crypto.createHash('md5').update(data, 'utf8').digest("hex")
-}
 
 var jwtFun = {
     async verify(token) {
@@ -204,7 +132,7 @@ var jwtFun = {
     }
 }
 
-var commonSelect = {
+let commonSelect = {
     //通用查询
     async getList(ctx) {
 
@@ -261,11 +189,11 @@ let http = {
 }
 
 module.exports = {
-    secrets: secrets,
-    ivkey: ivkey,
+    secrets: secret.secrets,
+    ivkey: secret.ivkey,
+    md5: secret.secrets.md5,
+    md5d: secret.secrets.md5d,
     http: http,
-    md5: md5,
-    md5d: md5d,
     jwtFun: jwtFun,
     commonSelect: commonSelect,
     loginState: loginState,

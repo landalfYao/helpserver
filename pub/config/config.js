@@ -1,33 +1,7 @@
 /**
  * 配置文件
  */
-//发布配置
-const production = {
-  //服务器端口
-  SERVER_PORT: 3000,
 
-  //REDIS配置
-  REDIS: {
-    host: "localhost",
-    port: 6379,
-    password: "abcd",
-    maxAge: 3600000
-  },
-
-  //MYSQL数据库配置
-  MYSQL: {
-    host: "www.sunwou.com",
-    user: "root",
-    password: "qwe123",
-    port: "3306",
-    database: "helpdb",
-    supportBigNumbers: true,
-    multipleStatements: true,
-    timezone: "utc"
-  },
-  //超级管理员
-  SUPER_ADMINISTRATOR: 1
-};
 
 //开发配置
 const development = {
@@ -53,11 +27,13 @@ const development = {
     dateStrings: true
   },
 
-  APP_ID: "wx20af16de914f1154",
-  APP_SECRET: "206dd03f37c7618f0397c5e672337065",
-  Mch_id: "1513123291",
-  Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1",
-  uploadPath: "https://hapi.ypyzy.top/uploads/files/",
+  
+  APP_ID: "wx20af16de914f1154", //微信小程序APPID
+  APP_SECRET: "206dd03f37c7618f0397c5e672337065", //微信小程序APP密钥
+  Mch_id: "1513123291", //商户号
+  Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1", //商户密钥
+  uploadPath: "https://hapi.ypyzy.top/uploads/files/", //图片路径
+
   getWxPayOrdrID: function () {
     var myDate = new Date();
     var year = myDate.getFullYear();
