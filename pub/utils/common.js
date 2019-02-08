@@ -1,4 +1,4 @@
-"use strict"; 
+"use strict";
 const crypto = require('crypto');
 
 const jwt = require('jsonwebtoken')
@@ -41,42 +41,59 @@ var jwtFun = {
     },
     //token uid 校验
     async checkToken(ctx) {
-        
+
         let token = ctx.header.token
         let uid = ctx.header.uid
-        
-        if (loginState.get('y' + uid) == 1) {
+        let payload = ''
+        if (token) {
+            payload = await this.verify(token)
+        }
+        if ((payload.type == 'yzy' && loginState.get('y' + uid) == 1) || payload.type == config.userType.WXM) {
             if (token) {
-                let payload = await this.verify(token)
+
                 if (payload == undefined || payload == -1 || payload == '') {
                     let result = {
-                        code:retCode.SessionExpired.code,
-                        codeMsg:retCode.SessionExpired.codeMsg
+                        code: retCode.SessionExpired.code,
+                        codeMsg: retCode.SessionExpired.codeMsg
                     };
                     result.msg = 'token 错误'
                     return result
                 } else {
-                    let isroleAuth = await this.checkRoleAuth(ctx.request.url,payload.role_id)
-              
+                    let isroleAuth = await this.checkRoleAuth(ctx.request.url, payload.role_id)
+
                     if (isroleAuth || uid == config.SUPER_ADMINISTRATOR) {
-                       
-                        if (payload.pk_id == uid) {
+                        if (payload.type == config.userType.YZY) {
+                            if (payload.pk_id == uid) {
+                                return {
+                                    pl: 1,
+                                    payload: payload
+                                }
+                            } else {
+                                let result = result = {
+                                    code: retCode.SessionExpired.code,
+                                    codeMsg: retCode.SessionExpired.codeMsg
+                                };
+                                result.msg = 'token 校验未通过'
+                                return result
+                            }
+                        } else if (payload.type == config.userType.WXM) {
                             return {
                                 pl: 1,
                                 payload: payload
                             }
                         } else {
                             let result = result = {
-                                code:retCode.SessionExpired.code,
-                                codeMsg:retCode.SessionExpired.codeMsg
+                                code: retCode.SessionExpired.code,
+                                codeMsg: retCode.SessionExpired.codeMsg
                             };
-                            result.msg = 'token 校验未通过'
+                            result.msg = '身份不明确'
                             return result
                         }
+
                     } else {
                         let result = {
-                            code:retCode.NoAuthority.code,
-                            codeMsg:retCode.NoAuthority.codeMsg
+                            code: retCode.NoAuthority.code,
+                            codeMsg: retCode.NoAuthority.codeMsg
                         };
                         result.msg = '对不起，您无权操作'
                         return result
@@ -117,8 +134,8 @@ var jwtFun = {
     async checkAuth(ctx) {
         let user = await this.checkToken(ctx)
         let result = {
-            code:retCode.Success.code,
-            codeMsg:retCode.Success.codeMsg
+            code: retCode.Success.code,
+            codeMsg: retCode.Success.codeMsg
         }
         if (user.pl == 1) {
             //判断是否有权限

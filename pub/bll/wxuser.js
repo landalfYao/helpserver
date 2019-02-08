@@ -14,6 +14,10 @@ const roles = {
             form.js_code + '&grant_type=authorization_code', 'GET', {})
       
         let byo = await model.getByOpenid(http.openid)
+        let userToken = {
+           openid:http.openid,
+           type:'wxm'
+        }
         if (byo.length == 0) {
             let add = await model.add({
                 openid: http.openid
@@ -22,12 +26,19 @@ const roles = {
                 result = retCode.Fail
 
             } else {
+                userToken.id=add.insertId
                 result.data = (await model.getByOpenid(http.openid))[0]
+                userToken.role_id = result.data.role_id
             }
         } else {
+            userToken.id=byo[0].id
+            userToken.role_id=byo[0].role_id
             result.data = byo[0]
         }
-
+        
+        //生成token
+        const token = await com.jwtFun.sign(userToken)
+        result.token = token
         return result
     },
     async addInfo(ctx) {

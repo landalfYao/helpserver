@@ -34,6 +34,11 @@ const development = {
   Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1", //商户密钥
   uploadPath: "https://hapi.ypyzy.top/uploads/files/", //图片路径
 
+  userType:{
+    WXM:'wxm',
+    YZY:'yzy'
+  },
+
   getWxPayOrdrID: function () {
     var myDate = new Date();
     var year = myDate.getFullYear();

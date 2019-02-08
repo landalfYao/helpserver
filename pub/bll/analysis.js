@@ -50,6 +50,51 @@ let app = {
             db.setLog(auth.uid, result.code, '数据分析', '', '查询代理数据 ' + result.msg, ctx.request.url)
         }
         return com.filterReturn(result)
+    },
+    async getWxuserSmData(ctx){
+        let result = retCode.Success
+        let form = ctx.request.body  
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if(auth.code == 1){
+            let data = await model.getComTotalAndSy(form)
+            result.data = data
+        }else{
+            result = auth
+        }
+        if (auth.uid) {
+            db.setLog(auth.uid, result.code, '数据分析', '', '查询微信用户部分数据 ' + result.msg, ctx.request.url)
+        }
+        return com.filterReturn(result)
+    },
+    async getOrderStateData(ctx){
+        let result = retCode.Success
+        let form = ctx.request.body  
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if(auth.code == 1){
+            let data = await model.getOrderStateType(form)
+            result.data = data
+        }else{
+            result = auth
+        }
+        if (auth.uid) {
+            db.setLog(auth.uid, result.code, '数据分析', '', '查询订单状态数据 ' + result.msg, ctx.request.url)
+        }
+        return com.filterReturn(result)
+    },
+    async getOrderTypeData(ctx){
+        let result = retCode.Success
+        let form = ctx.request.body  
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if(auth.code == 1){
+            let data = await model.getOrderTypeData(form)
+            result.data = data
+        }else{
+            result = auth
+        }
+        if (auth.uid) {
+            db.setLog(auth.uid, result.code, '数据分析', '', '查询订单类型数据 ' + result.msg, ctx.request.url)
+        }
+        return com.filterReturn(result)
     }
 
 }
