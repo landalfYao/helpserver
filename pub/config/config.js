@@ -32,7 +32,8 @@ const development = {
   APP_SECRET: "206dd03f37c7618f0397c5e672337065", //微信小程序APP密钥
   Mch_id: "1513123291", //商户号
   Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1", //商户密钥
-  uploadPath: "https://hapi.ypyzy.top/uploads/files/", //图片路径
+  uploadPath: "https://api.hbhzdtn.com/uploads/files/", //图片路径
+  imagesPath:"https://api.hbhzdtn.com/images/",
 
   userType:{
     WXM:'wxm',

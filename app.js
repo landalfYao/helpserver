@@ -28,6 +28,7 @@ const addressCate = require('./routes/addressCate')
 const addressUser = require('./routes/addressUser')
 const analysis = require('./routes/analysis')
 const capitalTrend = require('./routes/capitalTrend')
+const ptfile = require('./routes/ptfile')
 
 const koaBody = require('koa-body');
 app.use(koaBody({
@@ -107,6 +108,7 @@ app.use(addressCate.routes(), addressCate.allowedMethods())
 app.use(addressUser.routes(), addressUser.allowedMethods())
 app.use(analysis.routes(), analysis.allowedMethods())
 app.use(capitalTrend.routes(), capitalTrend.allowedMethods())
+app.use(ptfile.routes(), ptfile.allowedMethods())
 
 // error-handling 
 app.on('error', (err, ctx) => {
