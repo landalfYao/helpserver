@@ -1,6 +1,8 @@
 const model = require('./../model/wallet.js')
 const ctmodel = require('./../model/capitalTrend.js')
 const camodel = require('./../model/cashRecode.js')
+const wxcash = require('./../bll/wxcash.js')
+const wxuserModel = require('./../model/wxuser')
 const retCode = require('./../utils/retcode.js')
 const com = require('../utils/common')
 const db = require('./../db/mysqlHelper.js')
@@ -79,6 +81,10 @@ const roles = {
                     if (checkIncomeTotal == bkdata[0].income_total && checkCashTotal == bkdata[0].cash) {
                         if (cashFee <= realFee && cashFee > 0.3 && cashFee < 1000) {
                             //实现提现
+                            this.gocash(ctx, auth.payload.id, cashFee)
+                        } else {
+                            result = retCode.ServerError
+                            result.msg = '提现金额输入有误'
                         }
                     } else {
                         await camodel.add({
@@ -91,7 +97,6 @@ const roles = {
                         result = retCode.ServerError
                         result.msg = '您的账户数据异常'
                     }
-
                 } else {
                     result = retCode.ServerError
                     result.msg = '您的账户已被冻结'
@@ -106,6 +111,15 @@ const roles = {
         // }
         return com.filterReturn(result)
     },
+
+    async gocash(ctx, wx_id, amount) {
+        let wxuser = await wxuserModel.getById(wx_id)
+        let openid = wxuser[0].openid
+        let userinfo = await wxuserModel.getInfoByWxId(wx_id)
+        let realname = userinfo[0].name
+        wxcash.wxcash(ctx, openid, realname, amount)
+    },
+
     // async getList(ctx) {
     //     ctx.request.body.tables = 'roles'
     //     let auth = await com.jwtFun.checkAuth(ctx)
