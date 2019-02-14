@@ -14,7 +14,8 @@ const wxpay = {
         let check_name = 'FORCE_CHECK'
         let re_user_name = realName
         let desc = '接单用户提现'
-        let spbill_create_ip = ctx.request.ip.replace(/::ffff:/, ""); // 获取客户端ip
+        let spbill_create_ip = '129.28.89.58'; // 获取客户端ip
+
 
         let bodyData = await this.bodyData(openid, nonce_str, partner_trade_no, spbill_create_ip, amount * 100, check_name, re_user_name, desc)
         // 接口

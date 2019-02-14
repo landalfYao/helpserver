@@ -79,9 +79,14 @@ const roles = {
                     let checkIncomeTotal = ctdata[0].sum || 0
                     let checkCashTotal = cadata[0].sum || 0
                     if (checkIncomeTotal == bkdata[0].income_total && checkCashTotal == bkdata[0].cash) {
-                        if (cashFee <= realFee && cashFee > 0.3 && cashFee < 1000) {
+                        if (cashFee < realFee + 0.01 && cashFee > 0.3 && cashFee < 1000) {
                             //实现提现
-                            this.gocash(ctx, auth.payload.id, cashFee)
+                            let isok = await this.gocash(ctx, auth.payload.id, cashFee)
+                            if (isok.code) {
+                                result.msg = '提现成功'
+                            } else {
+                                result.msg = isok.msg
+                            }
                         } else {
                             result = retCode.ServerError
                             result.msg = '提现金额输入有误'
@@ -117,7 +122,43 @@ const roles = {
         let openid = wxuser[0].openid
         let userinfo = await wxuserModel.getInfoByWxId(wx_id)
         let realname = userinfo[0].name
-        wxcash.wxcash(ctx, openid, realname, amount)
+        let cash = await wxcash.wxcash(ctx, openid, realname, amount)
+        if (cash.result_code == 'SUCCESS') {
+            let ad = await camodel.add({
+                uid: wx_id,
+                type: 1,
+                cash_fee: amount,
+                state: 2,
+                trade_no: cash.partner_trade_no,
+                msg: '提现成功'
+            })
+            let re = await model.updateCash({
+                uid: wx_id,
+                add: amount
+            })
+            return {
+                code: true
+            }
+        } else if (cash.result_code == 'FAIL') {
+            let ad = await camodel.add({
+                uid: wx_id,
+                type: 1,
+                cash_fee: amount,
+                state: 3,
+                trade_no: cash.partner_trade_no,
+                msg: cash.err_code_des
+            })
+            let codemsg = {
+                SENDNUM_LIMIT: '您的今日提现次数已达上限，请改日再来',
+                V2_ACCOUNT_SIMPLE_BAN: '您的微信账户未实名，请实名后再来提现',
+                FREQ_LIMIT: '超过频率限制，请稍后再试。'
+            }
+            return {
+                code: false,
+                msg: codemsg[cash.err_code]
+            }
+        }
+
     },
 
     // async getList(ctx) {
