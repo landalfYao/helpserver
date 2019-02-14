@@ -7,7 +7,12 @@ const app = {
         let result = await db.query(sql, params)
         return result
     },
-
+    async sumFee(args) {
+        let sql = 'select sum(' + args.sumName + ') sum from capital_trend where ' + args.idName + '=?'
+        let params = [args.idvalue]
+        let result = await db.query(sql, params)
+        return result
+    },
     async findByAid(args) {
         let sql = 'select * from capital_trend where a_id=?'
         let params = [args.a_id]

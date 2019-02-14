@@ -140,7 +140,7 @@ var jwtFun = {
         if (user.pl == 1) {
             //判断是否有权限
             result.auth = true
-            result.uid = ctx.header.uid
+            result.uid = ctx.header.uid || user.payload.id
             result.payload = user.payload
         } else {
             result = user

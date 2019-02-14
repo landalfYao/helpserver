@@ -30,6 +30,7 @@ const analysis = require('./routes/analysis')
 const capitalTrend = require('./routes/capitalTrend')
 const ptfile = require('./routes/ptfile')
 const calousels = require('./routes/calousels')
+const wallet = require('./routes/wallet')
 
 const koaBody = require('koa-body');
 app.use(koaBody({
@@ -111,6 +112,7 @@ app.use(analysis.routes(), analysis.allowedMethods())
 app.use(capitalTrend.routes(), capitalTrend.allowedMethods())
 app.use(ptfile.routes(), ptfile.allowedMethods())
 app.use(calousels.routes(), calousels.allowedMethods())
+app.use(wallet.routes(), wallet.allowedMethods())
 
 
 // error-handling 
