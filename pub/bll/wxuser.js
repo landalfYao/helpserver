@@ -12,11 +12,11 @@ const roles = {
         let http = await com.http.request('https://api.weixin.qq.com/sns/jscode2session?appid=' +
             config.APP_ID + '&secret=' + config.APP_SECRET + '&js_code=' +
             form.js_code + '&grant_type=authorization_code', 'GET', {})
-      
+
         let byo = await model.getByOpenid(http.openid)
         let userToken = {
-           openid:http.openid,
-           type:'wxm'
+            openid: http.openid,
+            type: 'wxm'
         }
         if (byo.length == 0) {
             let add = await model.add({
@@ -26,16 +26,16 @@ const roles = {
                 result = retCode.Fail
 
             } else {
-                userToken.id=add.insertId
+                userToken.id = add.insertId
                 result.data = (await model.getByOpenid(http.openid))[0]
                 userToken.role_id = result.data.role_id
             }
         } else {
-            userToken.id=byo[0].id
-            userToken.role_id=byo[0].role_id
+            userToken.id = byo[0].id
+            userToken.role_id = byo[0].role_id
             result.data = byo[0]
         }
-        
+
         //生成token
         const token = await com.jwtFun.sign(userToken)
         result.token = token
@@ -60,7 +60,7 @@ const roles = {
         return com.filterReturn(result);
 
     },
-    async updateWX(ctx){
+    async updateWX(ctx) {
         let form = ctx.request.body;
         let result = retCode.Success;
         let bkdata = await model.updateWX(form);
@@ -127,7 +127,7 @@ const roles = {
                 result.msg = "服务端错误";
             }
         } else {
-            result.data = bkdata[0];
+            result.data = bkdata[0] || 0;
         }
         return com.filterReturn(result);
     },
@@ -219,7 +219,7 @@ const roles = {
         }
 
     },
-    async updateDefAddress(ctx){
+    async updateDefAddress(ctx) {
         let form = ctx.request.body
         let result = retCode.Success
         let auth = await com.jwtFun.checkAuth(ctx)

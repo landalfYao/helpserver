@@ -26,6 +26,11 @@ const app = {
         let params = [args.uid, args.type]
         let result = await db.query(sql, params)
         return result
+    },
+
+    async getList(args) {
+        let result = await db.commonSelect(args)
+        return result
     }
 }
 module.exports = app

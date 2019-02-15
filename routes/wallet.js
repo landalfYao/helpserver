@@ -13,7 +13,10 @@ router.post('/cash', async (ctx, next) => {
     let result = await bll.cash(ctx)
     ctx.body = result;
 })
-
+router.post('/cash/get', async (ctx, next) => {
+    let result = await bll.getList(ctx)
+    ctx.body = result;
+})
 
 
 module.exports = router

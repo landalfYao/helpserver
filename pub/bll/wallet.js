@@ -111,9 +111,9 @@ const roles = {
                 result.msg = '您不是接单员或账户未开通'
             }
         }
-        // if (auth.uid) {
-        //     db.setLog(auth.uid, result.code, 'wallets', 0, '用户查询账户余额 ' + result.msg, ctx.request.url)
-        // }
+        if (auth.uid) {
+            db.setLog(auth.uid, result.code, 'ctx.request.url', 0, '用户提现 ' + result.msg, ctx.request.url)
+        }
         return com.filterReturn(result)
     },
 
@@ -128,7 +128,7 @@ const roles = {
                 uid: wx_id,
                 type: 1,
                 cash_fee: amount,
-                state: 2,
+                state: 1,
                 trade_no: cash.partner_trade_no,
                 msg: '提现成功'
             })
@@ -151,7 +151,12 @@ const roles = {
             let codemsg = {
                 SENDNUM_LIMIT: '您的今日提现次数已达上限，请改日再来',
                 V2_ACCOUNT_SIMPLE_BAN: '您的微信账户未实名，请实名后再来提现',
-                FREQ_LIMIT: '超过频率限制，请稍后再试。'
+                FREQ_LIMIT: '超过频率限制，请稍后再试。',
+                RECV_ACCOUNT_NOT_ALLOWED: '收款账户不在收款账户列表',
+                SYSTEMERROR: '系统繁忙，请稍后再试。',
+                SEND_FAILED: '付款错误',
+                AMOUNT_LIMIT: '金额超限',
+                NAME_MISMATCH: '姓名校验出错'
             }
             return {
                 code: false,
@@ -161,29 +166,31 @@ const roles = {
 
     },
 
-    // async getList(ctx) {
-    //     ctx.request.body.tables = 'roles'
-    //     let auth = await com.jwtFun.checkAuth(ctx)
-    //     let result = retCode.Success
-    //     if (auth.auth) {
-    //         result = await com.commonSelect.getList(ctx)
-    //         if (result.args) {
-    //             let userResult = await model.getList(result.args, result.ct)
-    //             let bkdata = result.result
-    //             bkdata.data = userResult
+    async getList(ctx) {
+        ctx.request.body.tables = 'cash_recode,wxuser,userinfo,area'
+        ctx.request.body.fields = 'cash_recode.*,wxuser.phone,userinfo.name realname,area.name schoolName'
+        ctx.request.body.wheres += ' and cash_recode.uid = wxuser.id and cash_recode.uid=userinfo.wx_id and userinfo.a_id = area.pk_id'
+        let auth = await com.jwtFun.checkAuth(ctx)
+        let result = retCode.Success
+        if (auth.auth) {
+            result = await com.commonSelect.getList(ctx)
+            if (result.args) {
+                let userResult = await camodel.getList(result.args)
+                let bkdata = result.result
+                bkdata.data = userResult
 
-    //             let re = retCode.Success
-    //             re.data = userResult
-    //             re.msg = '查询成功'
-    //             result = re
-    //         }
-    //     } else {
-    //         result = auth
-    //     }
-    //     if (auth.uid) {
-    //         db.setLog(auth.uid, result.code, 'roles', '', '角色查询 ' + result.msg, '/api/role/get')
-    //     }
-    //     return com.filterReturn(result)
-    // },
+                let re = retCode.Success
+                re.data = userResult
+                re.msg = '查询成功'
+                result = re
+            }
+        } else {
+            result = auth
+        }
+        if (auth.uid) {
+            db.setLog(auth.uid, result.code, 'cash_recode', '', '提现查询 ' + result.msg, ctx.request.url)
+        }
+        return com.filterReturn(result)
+    },
 }
 module.exports = roles
