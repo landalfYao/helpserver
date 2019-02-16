@@ -108,6 +108,11 @@ const app = {
         let auth = await com.jwtFun.checkAuth(ctx)
         let result = retCode.Success
         if (auth.auth) {
+            if(auth.payload.type == 'wxm'){
+                ctx.request.body.wheres = 'is_delete=0 and is_show=1 and a_id='+ctx.request.body.a_id
+                ctx.request.body.sorts = 'sort asc,create_time desc'
+                ctx.request.body.pageSize = 5
+            }
             result = await com.commonSelect.getList(ctx)
             if (result.args) {
                 let userResult = await model.getList(result.args, result.ct)

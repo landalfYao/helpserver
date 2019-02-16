@@ -15,12 +15,12 @@ router.post('/del', async (ctx, next) => {
     let result = await bll.del(ctx)
     ctx.body = result;
 })
-router.post('/update/show', async (ctx, next) => {
-    let result = await bll.del(ctx,1)
+router.post('/show', async (ctx, next) => {
+    let result = await bll.updateShow(ctx,1)
     ctx.body = result;
 })
-router.post('/update/unshow', async (ctx, next) => {
-    let result = await bll.del(ctx,0)
+router.post('/unshow', async (ctx, next) => {
+    let result = await bll.updateShow(ctx,0)
     ctx.body = result;
 })
 
@@ -28,6 +28,7 @@ router.post('/get', async (ctx, next) => {
     let result = await bll.getList(ctx)
     ctx.body = result;
 })
+
 
 
 module.exports = router
