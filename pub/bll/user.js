@@ -7,6 +7,57 @@ const uPattern = /^[a-zA-Z0-9_-]{4,16}$/
 const pPattern = /[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/
 const mPattern = /^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[7|8])|(18[0,5-9]))\d{8}$/;
 const user = {
+    async updateEmer(ctx) {
+        let form = ctx.request.body
+        let result = retCode.Success
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if (auth.code == 1) {
+            form.uid = auth.uid
+            let bkdata = await usermodel.updateEmer(form)
+            if (bkdata.errno) {
+               
+                    result = retCode.ServerError
+                    result.msg = '服务端错误'
+                
+            } else {
+                result.data = bkdata.changedRows
+                result.msg = '修改成功了'+bkdata.changedRows+'条数据'
+            }
+        } else {
+            result = auth
+        }
+        if (auth.uid) {
+            db.setLog(auth.uid, result.code, 'y_user', auth.uid, '修改重要通知 ' + result.msg,  ctx.request.url)
+        }
+        return com.filterReturn(result)
+    },
+    async getEmer(ctx) {
+        let form = ctx.request.body
+        let result = retCode.Success
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if (auth.code == 1) {
+            let uid = auth.uid
+            if(auth.payload.type == 'wxm'){
+                uid = form.dl_id
+            }
+            let bkdata = await usermodel.getEmer(uid)
+            if (bkdata.errno) {
+               
+                    result = retCode.ServerError
+                    result.msg = '服务端错误'
+                
+            } else {
+                result.data = bkdata[0]
+                result.msg = '查询成功'
+            }
+        } else {
+            result = auth
+        }
+        if (auth.uid) {
+            db.setLog(auth.uid, result.code, 'y_user', auth.uid, '查询重要通知 ' + result.msg,  ctx.request.url)
+        }
+        return com.filterReturn(result)
+    },
     //禁用用户
     async disableUser(ctx, state) {
         let form = ctx.request.body

@@ -52,7 +52,18 @@ const user = {
     let params = [args.nickName, args.avatarUrl, args.uid]
     return await db.query(sql, params)
   },
+  //获取紧急通知
+  async getEmer(uid){
+    let sql = 'SELECT open_emer,emer_title,emer_content FROM y_user WHERE pk_id=' + uid
+    return await db.query(sql, [])
+  },
 
+  //修改紧急通知
+  async updateEmer(args){
+    let sql = 'UPDATE y_user SET open_emer=?,emer_title=?,emer_content=? WHERE pk_id=?'
+    let params = [args.open_emer, args.emer_title, args.emer_content,args.uid]
+    return await db.query(sql, params)
+  },
 
   //修改密码
   async updatePwd(args) {

@@ -48,5 +48,12 @@ router.post('/log/get', async (ctx, next) => {
   let result = await userBll.getLog(ctx)
   ctx.body = result;
 })
-
+router.post('/update/emer', async (ctx, next) => {
+  let result = await userBll.updateEmer(ctx)
+  ctx.body = result;
+})
+router.post('/get/emer', async (ctx, next) => {
+  let result = await userBll.getEmer(ctx)
+  ctx.body = result;
+})
 module.exports = router
