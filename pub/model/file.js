@@ -18,10 +18,16 @@ const app = {
         return result
     },
     async updateTemp(id) {
-        let sql = 'UPDATE files set is_temp=0 where id =' + id
+        let sql = 'UPDATE files set is_temp=0 where id in (' + id + ')'
         let result = await db.query(sql, [])
         return result
     },
+    async updateDel(id) {
+        let sql = 'UPDATE files set is_delete=1 where id in (' + id + ')'
+        let result = await db.query(sql, [])
+        return result
+    },
+
 
 
     async getList(args) {

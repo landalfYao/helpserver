@@ -63,6 +63,26 @@ let app = {
         }
         return com.filterReturn(result)
     },
+    async updateDel(ctx) {
+        let form = ctx.request.body
+        let result = retCode.Success
+        let auth = await com.jwtFun.checkAuth(ctx)
+        if (auth.code == 1) {
+            let bkdata = await model.updateDel(
+                form.id
+            )
+            if (bkdata.errno) {
+                result = retCode.ServerError
+                result.msg = '服务端错误'
+            } else {
+                result.data = bkdata.changedRows
+            }
+
+        } else {
+            result = auth
+        }
+        return com.filterReturn(result)
+    },
     async getList(ctx) {
         ctx.request.body.tables = 'files'
         let auth = await com.jwtFun.checkAuth(ctx)
