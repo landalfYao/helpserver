@@ -17,7 +17,6 @@ const wxpay = {
         let nonce_str = await this.getNonceStr(); // 随机字符串
         let out_trade_no = await config.getWxPayOrdrID(); // 商户订单号
         let total_fee = parseInt(param.total_fee * 100); // 订单价格 单位是 分
-        console.log(total_fee)
         let timestamp = Math.round(new Date().getTime() / 1000); // 当前时间
 
         let bodyData = await this.bodyData(body, nonce_str, openid, out_trade_no, spbill_create_ip, total_fee, notify_url)

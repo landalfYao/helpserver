@@ -32,6 +32,7 @@ const ptfile = require('./routes/ptfile')
 const calousels = require('./routes/calousels')
 const wallet = require('./routes/wallet')
 const richtext = require('./routes/richtext')
+const wxmp = require('./routes/wxmp')
 
 const koaBody = require('koa-body');
 app.use(koaBody({
@@ -115,6 +116,7 @@ app.use(ptfile.routes(), ptfile.allowedMethods())
 app.use(calousels.routes(), calousels.allowedMethods())
 app.use(wallet.routes(), wallet.allowedMethods())
 app.use(richtext.routes(), richtext.allowedMethods())
+app.use(wxmp.routes(), wxmp.allowedMethods())
 
 // error-handling 
 app.on('error', (err, ctx) => {
