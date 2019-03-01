@@ -96,8 +96,9 @@ const roles = {
           result.msg = "服务端错误";
         }
       } else {
-        result.data = bkdata.insertId;
+        result.data = bkdata.changedRows;
         result.msg = "修改成功";
+        com.http.request('http://127.0.0.1:3339/api/wxmp/sendNotice?oid=' + ordata.id, 'GET', {})
       }
     }
 
