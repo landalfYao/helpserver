@@ -37,9 +37,9 @@ const roles = {
         let result = await db.query(sql, params);
         return result;
     },
-    async updateWX(args){
-        let sql = 'update wxuser set nick_name=?,phone=?,dphone=? where id=?'
-        let result = await db.query(sql, [args.nick_name,args.phone,args.dphone,args.id]);
+    async updateWX(args) {
+        let sql = 'update wxuser set avatar_url=?,nick_name=?,phone=?,dphone=? where id=?'
+        let result = await db.query(sql, [args.avatar_url, args.nick_name, args.phone, args.dphone, args.id]);
         return result;
     },
     async updateInfoState(args) {
@@ -92,9 +92,9 @@ const roles = {
         let result = await db.commonSelect(args);
         return result;
     },
-    async updateDefAddress(args){
+    async updateDefAddress(args) {
         let sql = 'update wxuser set default_address=? where id=?'
-        let result = await db.query(sql, [args.default_address,args.id]);
+        let result = await db.query(sql, [args.default_address, args.id]);
         return result;
     }
 };

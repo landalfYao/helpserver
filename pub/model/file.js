@@ -6,8 +6,8 @@ const app = {
         return result;
     },
     async add(args) {
-        let sql = 'INSERT INTO files (filename,size,realname,type,wx_id) value(?,?,?,?,?)'
-        let params = [args.filename, args.size, args.realname, args.type, args.wx_id]
+        let sql = 'INSERT INTO files (filename,size,realname,type,wx_id,is_temp) value(?,?,?,?,?,?)'
+        let params = [args.filename, args.size, args.realname, args.type, args.wx_id, args.is_temp]
         let result = await db.query(sql, params)
         return result
     },

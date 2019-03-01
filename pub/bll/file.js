@@ -29,7 +29,8 @@ let app = {
             size: file.size,
             realname: pat,
             type: file.type,
-            wx_id: form.wx_id
+            wx_id: form.wx_id,
+            is_temp: form.is_temp || 1
         })
 
         let returnData = {
