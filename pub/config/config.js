@@ -18,25 +18,25 @@ const development = {
 
   //MYSQL数据库配置
   MYSQL: {
-    host: "129.28.89.58",
+    host: "localhost:3306",
     user: "root",
-    password: "Qwe123..",
+    password: "", //数据库密码
     port: "3306",
-    database: "help",
+    database: "help", //数据库名
     timezone: "+08:00",
     dateStrings: true
   },
 
 
-  APP_ID: "wx20af16de914f1154", //微信小程序APPID
-  APP_SECRET: "206dd03f37c7618f0397c5e672337065", //微信小程序APP密钥
-  Mch_id: "1513123291", //商户号
-  Mch_key: "hzddwlkjyxgs2018ytcdjdlkyl10h1z1", //商户密钥
+  APP_ID: "", //微信小程序APPID
+  APP_SECRET: "", //微信小程序APP密钥
+  Mch_id: "", //商户号
+  Mch_key: "", //商户密钥
 
-  WXMP_TOKEN: 'hubanghuzhudaitini2018',
+  // WXMP_TOKEN: 'hubanghuzhudaitini2018',
 
-  uploadPath: "https://api.hbhzdtn.com/uploads/files/", //图片路径
-  imagesPath: "https://api.hbhzdtn.com/images/",
+  uploadPath: "http://localhost:3337/uploads/files/", //图片路径
+  imagesPath: "http://localhost:3337/images/",
 
 
   userType: {
