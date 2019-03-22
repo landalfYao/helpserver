@@ -7,14 +7,14 @@
 
 #### 安装教程
 
-#####1.新建数据库
+1.新建数据库
 数据库文件 help.sql
 
 ```
 CREATE SCHEMA `help` DEFAULT CHARACTER SET utf8mb4 ;
 ```
 
-#####2.修改配置文件
+2.修改配置文件
 路径 pub/config/config.js
 
 ```
@@ -35,7 +35,7 @@ CREATE SCHEMA `help` DEFAULT CHARACTER SET utf8mb4 ;
   Mch_key: "", //商户密钥
 ```
 
-#####3.安装依赖并启动
+3.安装依赖并启动
 
 ```
 npm install
