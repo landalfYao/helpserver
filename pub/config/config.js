@@ -18,7 +18,7 @@ const development = {
 
   //MYSQL数据库配置
   MYSQL: {
-    host: "localhost:3306",
+    host: "localhost",
     user: "root",
     password: "", //数据库密码
     port: "3306",
