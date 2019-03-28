@@ -4,8 +4,8 @@ const user = {
 
   //新增用户
   async addUser(args) {
-    let sql = 'INSERT INTO y_user(username, pwd ,dtype,a_id,phone,deadline) VALUES(?, ?, ?,?,?,?)'
-    let params = [args.username, args.password, args.dtype, args.a_id, args.phone, args.deadline]
+    let sql = 'INSERT INTO y_user(username, pwd ,dtype,a_id,phone,deadline,role_id) VALUES(?, ?, ?,?,?,?,?)'
+    let params = [args.username, args.password, args.dtype, args.a_id, args.phone, args.deadline, args.role_id]
     let result = await db.query(sql, params)
     return result
   },
@@ -53,15 +53,15 @@ const user = {
     return await db.query(sql, params)
   },
   //获取紧急通知
-  async getEmer(uid){
+  async getEmer(uid) {
     let sql = 'SELECT open_emer,emer_title,emer_content FROM y_user WHERE pk_id=' + uid
     return await db.query(sql, [])
   },
 
   //修改紧急通知
-  async updateEmer(args){
+  async updateEmer(args) {
     let sql = 'UPDATE y_user SET open_emer=?,emer_title=?,emer_content=? WHERE pk_id=?'
-    let params = [args.open_emer, args.emer_title, args.emer_content,args.uid]
+    let params = [args.open_emer, args.emer_title, args.emer_content, args.uid]
     return await db.query(sql, params)
   },
 

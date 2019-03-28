@@ -15,19 +15,19 @@ const user = {
             form.uid = auth.uid
             let bkdata = await usermodel.updateEmer(form)
             if (bkdata.errno) {
-               
-                    result = retCode.ServerError
-                    result.msg = '服务端错误'
-                
+
+                result = retCode.ServerError
+                result.msg = '服务端错误'
+
             } else {
                 result.data = bkdata.changedRows
-                result.msg = '修改成功了'+bkdata.changedRows+'条数据'
+                result.msg = '修改成功了' + bkdata.changedRows + '条数据'
             }
         } else {
             result = auth
         }
         if (auth.uid) {
-            db.setLog(auth.uid, result.code, 'y_user', auth.uid, '修改重要通知 ' + result.msg,  ctx.request.url)
+            db.setLog(auth.uid, result.code, 'y_user', auth.uid, '修改重要通知 ' + result.msg, ctx.request.url)
         }
         return com.filterReturn(result)
     },
@@ -37,15 +37,15 @@ const user = {
         let auth = await com.jwtFun.checkAuth(ctx)
         if (auth.code == 1) {
             let uid = auth.uid
-            if(auth.payload.type == 'wxm'){
+            if (auth.payload.type == 'wxm') {
                 uid = form.dl_id
             }
             let bkdata = await usermodel.getEmer(uid)
             if (bkdata.errno) {
-               
-                    result = retCode.ServerError
-                    result.msg = '服务端错误'
-                
+
+                result = retCode.ServerError
+                result.msg = '服务端错误'
+
             } else {
                 result.data = bkdata[0]
                 result.msg = '查询成功'
@@ -54,7 +54,7 @@ const user = {
             result = auth
         }
         if (auth.uid) {
-            db.setLog(auth.uid, result.code, 'y_user', auth.uid, '查询重要通知 ' + result.msg,  ctx.request.url)
+            db.setLog(auth.uid, result.code, 'y_user', auth.uid, '查询重要通知 ' + result.msg, ctx.request.url)
         }
         return com.filterReturn(result)
     },
@@ -360,7 +360,8 @@ const user = {
                             dtype: form.dtype,
                             a_id: form.a_id,
                             phone: form.phone,
-                            deadline: form.deadline
+                            deadline: form.deadline,
+                            role_id: form.dtype == 1 ? 1 : 2
                         })
                         if (res.errno) {
                             return {
@@ -435,8 +436,8 @@ const user = {
                                     a_id: res[0].a_id,
                                     dtype: res[0].dtype,
                                     phone: res[0].phone,
-                                    role_id:res[0].role_id,
-                                    type:'yzy'
+                                    role_id: res[0].role_id,
+                                    type: 'yzy'
                                 }
                                 //生成token
                                 const token = await com.jwtFun.sign(userToken)
