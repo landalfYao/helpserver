@@ -4,8 +4,6 @@ const com = require('../utils/common')
 const db = require('./../db/mysqlHelper.js')
 const config = require('../config/config.js')
 const roles = {
-
-
     async login(ctx) {
         let form = ctx.request.body
         let result = retCode.Success
