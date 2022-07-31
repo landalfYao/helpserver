@@ -47,12 +47,9 @@ npm start
 
 访问[http://localhost:3337](http://localhost:3337)
 
-#### 交流
-微信号:landalfyzy<br>
-![输入图片说明](https://images.gitee.com/uploads/images/2019/0320/102250_efc7b2d0_1930998.jpeg "微信图片_20190320102141.jpg")
-<br>
+#### 项目交流
 QQ群<br>
 ![输入图片说明](https://images.gitee.com/uploads/images/2019/0325/100055_4cc3cea8_1930998.png "微信截图_20190325095959.png")
 
-#### 付费服务
-人工服务端部署服务：提供后台服务端和后台客户端项目部署，直至成功运行为止。需要提供服务请加微信。
+#### 声明
+该项目由跑跑乐校园提供，开源版免费开源使用
