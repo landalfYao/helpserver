@@ -6,7 +6,7 @@
 [2.后台客户端地址：https://github.com/landalfYao/helpclient.git](https://github.com/landalfYao/helpclient.git)<br>
 
 #### 线上部署教程
-1. 后台服务端部署教程[https://my.oschina.net/u/4053979/blog/3026392](https://my.oschina.net/u/4053979/blog/3026392)
+1.后台服务端部署教程[https://my.oschina.net/u/4053979/blog/3026392](https://my.oschina.net/u/4053979/blog/3026392)
 
 #### 安装教程
 
@@ -51,5 +51,5 @@ npm start
 QQ群<br>
 ![输入图片说明](https://images.gitee.com/uploads/images/2019/0325/100055_4cc3cea8_1930998.png "微信截图_20190325095959.png")
 
-#### 声明
+#### 项目声明
 该项目由跑跑乐校园提供，该版本为开源版，可免费使用
