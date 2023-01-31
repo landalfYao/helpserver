@@ -74,7 +74,8 @@ const app = {
     if (uw.length == 1) {
       let uinc = await wModel.updateIncome({
         add: gets,
-        uid: id
+        uid: id,
+        type: type
       });
     } else {
       let uinc = await wModel.add({
@@ -84,7 +85,8 @@ const app = {
       if (uinc.insertId) {
         await wModel.updateIncome({
           add: gets,
-          uid: id
+          uid: id,
+          type: type
         });
       }
     }

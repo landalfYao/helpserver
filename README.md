@@ -1,18 +1,19 @@
-# 校园综合服务平台小程序后台服务端
+# 校园综合服务平台-后台
+## 介绍
 
-#### 项目链接
+> 本文档为校园综合服务平台服务端的安装部署教程，欢迎 star
+
+> 项目不足请多指教，任何问题请移步对应的仓库提交Issues，或加入最下方交流群
+
+### 项目链接
 本项目配合以下两端使用：<br>
-[1.小程序端地址：https://github.com/landalfYao/help.git](https://github.com/landalfYao/help.git)<br>
-[2.后台客户端地址：https://github.com/landalfYao/helpclient.git](https://github.com/landalfYao/helpclient.git)<br>
+#### [1.后台-服务端地址：https://github.com/landalfYao/helpserver.git](https://github.com/landalfYao/helpserver.git)<br>
+#### [2.小程序端地址：https://github.com/landalfYao/help.git](https://github.com/landalfYao/help.git)<br>
 
-#### 线上部署教程
-1.后台服务端部署教程[https://my.oschina.net/u/4053979/blog/3026392](https://my.oschina.net/u/4053979/blog/3026392)
+## 安装教程
 
-#### 安装教程
-
-1.新建数据库
-数据库文件 help.sql
-
+#### 1.新建数据库
+本目录中找到数据库文件 ```help.sql```
 ```
 CREATE SCHEMA `help` DEFAULT CHARACTER SET utf8mb4 ;
 ```
@@ -23,7 +24,7 @@ CREATE SCHEMA `help` DEFAULT CHARACTER SET utf8mb4 ;
 ```
   MYSQL: {
     host: "localhost",
-    user: "root",
+    user: "root",//数据库用户名
     password: "", //数据库密码
     port: "3306",
     database: "help", //数据库名
@@ -47,9 +48,10 @@ npm start
 
 访问[http://localhost:3337](http://localhost:3337)
 
-#### 项目交流
-QQ群<br>
-![输入图片说明](https://images.gitee.com/uploads/images/2019/0325/100055_4cc3cea8_1930998.png "微信截图_20190325095959.png")
+## 交流方式
 
-#### 项目声明
-该项目由跑跑乐校园提供，该版本为开源版，可免费使用
+### ！搭建遇到任何问题，请联系群内管理人员，切勿相信其他非管理人员！
+
+点击链接加入群聊【hbhzdtn交流群1群】：https://jq.qq.com/?_wv=1027&k=8P2OdlUB
+
+点击链接加入群聊【hbhzdtn交流群2群】：https://jq.qq.com/?_wv=1027&k=jNQktW2Q

@@ -33,7 +33,7 @@ const development = {
   Mch_id: "", //商户号
   Mch_key: "", //商户密钥
 
-  // WXMP_TOKEN: 'hubanghuzhudaitini2018',
+  // WXMP_TOKEN: 'baixiaochuanglian2023',
 
   uploadPath: "http://localhost:3337/uploads/files/", //图片路径
   imagesPath: "http://localhost:3337/images/",

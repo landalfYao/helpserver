@@ -8,8 +8,8 @@ const app = {
         return result
     },
     async updateIncome(args) {
-        let sql = 'update wallets set income_total = income_total+? where uid = ?'
-        let params = [args.add, args.uid]
+        let sql = 'update wallets set income_total = income_total+? where uid = ? and type =?'
+        let params = [args.add, args.uid, args.type]
         let result = await db.query(sql, params)
         return result
     },

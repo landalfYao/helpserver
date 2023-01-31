@@ -406,7 +406,7 @@ const user = {
               return {
                 code: res.errno,
                 codeMsg: res.code,
-                msg: "用户名已存在"
+                msg: "区域ID填写错误或用户名已存在"
               };
             } else {
               result.data = form.username;
