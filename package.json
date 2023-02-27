@@ -19,7 +19,7 @@
     "koa-json": "^2.0.2",
     "koa-jwt": "^3.5.1",
     "koa-logger": "^2.0.1",
-    "koa-onerror": "^1.2.1",
+    "koa-onerror": "^4.2.0",
     "koa-router": "^7.1.1",
     "koa-session": "^5.10.0",
     "koa-session-redis": "^1.1.0",
